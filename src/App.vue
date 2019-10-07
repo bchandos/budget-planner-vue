@@ -1,25 +1,19 @@
 <template>
     <div id="app">
         <InputForm 
-            v-bind:editMode="editMode" 
-            v-bind:date="date"
-            v-bind:banks="banks" 
-            v-bind:bank_select="bank_select" 
-            v-bind:description="description"
-            v-bind:categories="categories"
-            v-bind:category_select="category_select"
-            v-bind:debit="debit"
-            v-on:exitEdit="exitEdit"
-            v-on:postData="postData"
+            v-bind:editTransaction="editTransaction"
+            @transactionCreated="transactionCreated"
+            @transactionEdited="transactionEdited"
+            @exitEdit="exitEdit"
              />
 
         <TransactionList 
-            v-bind:transactions="sortedTransactions" 
-            v-bind:id="edit_id"
-            v-bind:editMode="editMode"
-            v-bind:edit_id="edit_id"
-            @edit="editTrans($event)"
-            @delete="deleteTrans($event)"
+            v-bind:editedTransaction="editedTransaction"
+            v-bind:createdTransaction="createdTransaction"
+            v-bind:gEditMode="editMode"
+            v-bind:editId="editId"
+            @sendToEdit="sendToEdit"
+            @exitEdit="exitEdit"
              />
     </div>
 </template>
@@ -36,135 +30,37 @@ export default {
     },
     data() {
         return {
+            editTransaction: null, // transaction to edit
+            editedTransaction: null, // transaction that has been edited
+            createdTransaction: null, // transaction that has been created
             editMode: false,
-            edit_id: -1,
-            description: '',
-            date: '',
-            debit: null,
-            bank_select: null,
-            category_select: null,
-            categories: [{text: 'dick butts', value: 1},            
-                         {text: 'butt dicks', value: 2}, 
-                         {text: 'boobies', value: 3}],
-            banks: [],
-            transactions: []
+            editId: -1
         }
     },
-    created: async function () {
-        // Fetch accounts from an API
-        const response_accounts = await fetch('http://127.0.0.1:8080/api/v0.1/accounts');
-        const json_accounts = await response_accounts.json();
-        json_accounts.payload.forEach((e) => {
-            this.banks.push({text: e.name, value: e.id});
-            }
-        );
-        
-        // Fetch transactions from an API
-        const response_trans = await fetch('http://127.0.0.1:8080/api/v0.1/transactions');
-        const json_trans = await response_trans.json();
-        this.transactions = json_trans.payload;
-        this._debugVals();
-    },
+    
     methods: {
-        postData: async function() {
-            if (!this.editMode) {
-                let url = 'http://127.0.0.1:8080/api/v0.1/transaction';
-                let form_data = {description: this.description,
-                                account: this.bank_select,
-                                debit: this.debit,
-                                date: this.date};
-                const response = await fetch(url, {
-                    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(form_data) // body data type must match "Content-Type" header
-                });
-                if (response.status == 201) {
-                    let json = await response.json();
-                    this.transactions.push(json.payload);
-                    this._debugVals();
-                }
-            } else if (this.editMode) {
-                let url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + this.edit_id;
-                let form_data = {description: this.description,
-                                account: this.bank_select,
-                                debit: this.debit,
-                                date: this.date};
-                const response = await fetch(url, {
-                    method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(form_data) // body data type must match "Content-Type" header
-                });
-                if (response.status == 201) {
-                    let json = await response.json();
-                    this.transactions = this.transactions.filter(function(o) {return o.id != json.payload.id});
-                    this.transactions.push(json.payload);
-                    this.exitEdit();
-                }
-            }
-        },
-        deleteTrans: async function(transaction) {
-            this.exitEdit()
-            let url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + transaction.id;
-            const response = await fetch(url, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (response.status == 200){
-                // let json = await response.json();
-                this.transactions = this.transactions.filter(function(o) {return o != transaction});
-            }
-            
-        },
-        editTrans: async function(transaction) {
-            if (transaction) {
-                this.date = transaction.date.slice(0,10);
-                this.description = transaction.description;
-                this.bank_select = transaction.account;
-                this.debit = transaction.debit;
-                this.edit_id = transaction.id;
-                this.editMode = true;
-            }
-        },
         exitEdit: function() {
             this.editMode = false;
-            this._debugVals();
+            this.editTransaction = null;
+            this.editId = -1;
         },
-        _debugVals: function() {
-            this.edit_id = -1;
-            let dict = ['Williamsburg distillery', 'dreamcatcher', 'selfies', 'tumblr', 'palo santo', 'Edison bulb', 'roof party', 'copper mug'];
-            this.description = dict[Math.floor(Math.random()*dict.length)] + ' ' + dict[Math.floor(Math.random()*dict.length)];
-            let d = new Date(Math.random()*3000000000000);
-            this.date = d.toISOString().slice(0, 10);
-            this.debit = Math.floor(Math.random()*1000);
-            this.bank_select = this.banks[Math.floor(Math.random()*this.banks.length)].value
-            this.category_select = 1;
+
+        transactionCreated: function(t) {
+            // console.log(t);
+            this.createdTransaction = t;
         },
-        _defaultVals: function() {
-            this.edit_id = -1;
-            this.description = '';
-            this.date = '';
-            this.debit = null;
-            this.bank_select = null;
-            this.category_select = null;
+        transactionEdited: function(t) {
+            // console.log(t);
+            this.editedTransaction = t;
         },
-        bankName: function(id) {
-            return this.banks.find((e) => {return e.value == id}).text;
-            // return x.text;
+        sendToEdit: function(t) {
+            this.editTransaction = t;
+            this.editMode = true;
+            this.editId = t.id;
         }
+        
     },
-    computed: {
-        sortedTransactions: function() {
-            const transactions_copy = [...this.transactions];
-            return transactions_copy.sort(function(a, b) {return a.date > b.date});
-            // return this.transactions.slice(0).sort(function(a, b) {return a.date > b.date});
-        }
-    },
+
 }
 </script>
 

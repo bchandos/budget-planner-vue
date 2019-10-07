@@ -11,13 +11,15 @@
             </div>
         <div v-if="transactions.length">
             <TransactionItem 
-                v-for="transaction in transactions" 
-                v-bind:class="{ editing: transaction.id == id, not_editing: transaction.id != id }"
+                v-for="transaction in sortedTransactions" 
+                v-bind:class="{ editing: transaction.id == editId, not_editing: transaction.id != editId }"
                 v-bind:key="transaction.id"
                 v-bind:transaction="transaction"
                 v-bind:editMode="editMode"
-                @edit="$emit('edit', $event)"
-                @delete="$emit('delete', $event)"
+                v-bind:editId="editId"
+                @edit="sendToEdit"
+                @delete="deleteTrans"
+                @edit-off="$emit('exitEdit')"
                 />
         </div>
         <div v-else>
@@ -34,22 +36,78 @@ export default {
         TransactionItem
     },
     props: {
-        transactions: {
-            type: Array,
-            required: true
+        editedTransaction: {
+            type: Object,
+            required: false
         },
-        id: {
-            type: Number,
-            required: true
+        createdTransaction: {
+            type: Object,
+            required: false
         },
-        editMode: {
+        gEditMode: {
             type: Boolean,
             required: true
         },
-        edit_id: {
+        editId: {
             type: Number,
             required: true
         }
-    }
+    },
+    data() {
+        return {
+            transactions: [],
+            editMode: false
+        }
+    },
+    created: async function() {
+        // Setup
+        this.editMode = this.gEditMode;
+        // Fetch transactions from an API
+        const response_trans = await fetch('http://127.0.0.1:8080/api/v0.1/transactions');
+        const json_trans = await response_trans.json();
+        this.transactions = json_trans.payload;
+    },
+    watch: {
+        editedTransaction: function() {
+            this.transactions = this.transactions.filter(function(o) {return o != this.editedTransaction});
+            this.transactions.push(this.editedTransaction)
+            // this.editedTransaction = null;
+        },
+        createdTransaction: function() {
+            this.transactions.push(this.createdTransaction);
+            // this.createdTransaction = null;
+        },
+        gEditMode: function() {
+            this.editMode = this.gEditMode;
+        }
+    },
+    methods: {
+        deleteTrans: async function(t) {
+            this.$emit('exitEdit');
+            let url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + t.id;
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.status == 200){
+                // let json = await response.json();
+                this.transactions = this.transactions.filter(function(o) {return o != t});
+            }
+        },
+        sendToEdit: function(t) {
+            this.editMode
+            this.$emit('sendToEdit', t);
+        },
+
+    },
+    computed: {
+        sortedTransactions: function() {
+            const transactions_copy = [...this.transactions];
+            return transactions_copy.sort(function(a, b) {return a.date > b.date});
+            // return this.transactions.slice(0).sort(function(a, b) {return a.date > b.date});
+        }
+    },
 }
 </script>
