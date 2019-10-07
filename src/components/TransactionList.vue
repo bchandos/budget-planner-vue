@@ -38,11 +38,11 @@ export default {
     props: {
         editedTransaction: {
             type: Object,
-            required: false
+            required: true
         },
         createdTransaction: {
             type: Object,
-            required: false
+            required: true
         },
         gEditMode: {
             type: Boolean,
@@ -69,13 +69,17 @@ export default {
     },
     watch: {
         editedTransaction: function() {
-            this.transactions = this.transactions.filter(function(o) {return o != this.editedTransaction});
-            this.transactions.push(this.editedTransaction)
-            // this.editedTransaction = null;
+            if (this.editedTransaction) {
+                let e = this.editedTransaction
+                this.transactions = this.transactions.filter(function(o) {return o.id != e.id});
+                this.transactions.push(this.editedTransaction);
+            }
         },
         createdTransaction: function() {
-            this.transactions.push(this.createdTransaction);
-            // this.createdTransaction = null;
+            if (this.createdTransaction) {
+                this.transactions.push(this.createdTransaction);
+                // this.createdTransaction = null;
+            }
         },
         gEditMode: function() {
             this.editMode = this.gEditMode;

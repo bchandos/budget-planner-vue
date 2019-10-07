@@ -52,6 +52,8 @@ export default {
         transactionEdited: function(t) {
             // console.log(t);
             this.editedTransaction = t;
+            this.editMode = false;
+            this.editId = -1;
         },
         sendToEdit: function(t) {
             this.editTransaction = t;

@@ -120,7 +120,7 @@ export default {
                     this._debugVals();
                 }
             } else if (this.editMode) {
-                let url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + this.edit_id;
+                let url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + this.editId;
                 let form_data = {description: this.description,
                                 account: this.bank_select,
                                 debit: this.debit,
