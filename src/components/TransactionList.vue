@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Existing Transactions</h2>
+        <h2>Transactions</h2>
             <div>
                 <span class="transaction_account"><strong>Account</strong></span>
                 <span class="transaction_date"><strong>Date</strong></span>
@@ -17,6 +17,7 @@
                 v-bind:transaction="transaction"
                 v-bind:editMode="editMode"
                 v-bind:editId="editId"
+                v-bind:banks="banks"
                 @edit="sendToEdit"
                 @delete="deleteTrans"
                 @edit-off="$emit('exitEdit')"
@@ -51,12 +52,13 @@ export default {
         editId: {
             type: Number,
             required: true
-        }
+        },
     },
     data() {
         return {
             transactions: [],
-            editMode: false
+            editMode: false,
+            banks: []
         }
     },
     created: async function() {
@@ -66,6 +68,14 @@ export default {
         const response_trans = await fetch('http://127.0.0.1:8080/api/v0.1/transactions');
         const json_trans = await response_trans.json();
         this.transactions = json_trans.payload;
+        
+        // Fetch accounts from an API
+        const response_accounts = await fetch('http://127.0.0.1:8080/api/v0.1/accounts');
+        const json_accounts = await response_accounts.json();
+        json_accounts.payload.forEach((e) => {
+            this.banks[e.id] = e.name;
+            }
+        );
     },
     watch: {
         editedTransaction: function() {
@@ -111,7 +121,8 @@ export default {
             const transactions_copy = [...this.transactions];
             return transactions_copy.sort(function(a, b) {return a.date > b.date});
             // return this.transactions.slice(0).sort(function(a, b) {return a.date > b.date});
-        }
+        },
+        
     },
 }
 </script>

@@ -1,11 +1,20 @@
 <template>
     <div id="app">
-        <InputForm 
-            v-bind:editTransaction="editTransaction"
-            @transactionCreated="transactionCreated"
-            @transactionEdited="transactionEdited"
-            @exitEdit="exitEdit"
-             />
+        <button type="button" class="btn" @click="showModal">Add New Transaction</button>
+        <modal v-show="isModalVisible" @close="closeModal">
+            <template v-slot:header>
+                <p></p>
+            </template>
+            <template v-slot:body>        
+                <InputForm 
+                    v-bind:editTransaction="editTransaction"
+                    @transactionCreated="transactionCreated"
+                    @transactionEdited="transactionEdited"
+                    @exitEdit="exitEdit"
+                    />
+            </template>
+
+        </modal>
 
         <TransactionList 
             v-bind:editedTransaction="editedTransaction"
@@ -19,14 +28,16 @@
 </template>
 
 <script>
-import TransactionList from './components/TransactionList.vue'
-import InputForm from './components/InputForm.vue'
+import TransactionList from './components/TransactionList.vue';
+import InputForm from './components/InputForm.vue';
+import Modal from './components/Modal.vue';
 
 export default {
     name: 'app',
     components: {
         TransactionList,
-        InputForm
+        InputForm,
+        Modal
     },
     data() {
         return {
@@ -34,12 +45,14 @@ export default {
             editedTransaction: null, // transaction that has been edited
             createdTransaction: null, // transaction that has been created
             editMode: false,
-            editId: -1
+            editId: -1,
+            isModalVisible: false
         }
     },
     
     methods: {
         exitEdit: function() {
+            this.isModalVisible = false;
             this.editMode = false;
             this.editTransaction = null;
             this.editId = -1;
@@ -59,6 +72,14 @@ export default {
             this.editTransaction = t;
             this.editMode = true;
             this.editId = t.id;
+            this.isModalVisible = true;
+        },
+        showModal: function() {
+            this.isModalVisible = true;
+        },
+        closeModal: function() {
+            this.isModalVisible = false;
+            this.exitEdit();
         }
         
     },
@@ -102,6 +123,7 @@ export default {
     }
     .not_editing {
         background-color: inherit;
+        transition-delay: 250ms;
         transition-duration: 400ms;
     }
     .icon {
@@ -128,7 +150,7 @@ export default {
     }
 
     #transaction_form {
-        max-width: 50%;
+        max-width: 95%;
         border: 1px solid black;
         padding: 1em;
         background-color: rgba(250, 250, 210, 0.5);

@@ -1,5 +1,5 @@
 <template>
-    <form id="transaction_form" v-bind:class="{ editing: editMode }" v-on:submit.prevent="postData" method="POST">
+    <form id="transaction_form" v-bind:class="{ editing: editMode, not_editing: !editMode }" v-on:submit.prevent="postData" method="POST">
         <input type="hidden" v-model="id">
         <p class="form_els">
             <label class="transaction_form_label" for="date">Date:</label>
@@ -32,9 +32,9 @@
         <p class="form_els">
             <input class="btn" :disabled="editMode" type="submit" value="Submit">
             <input class="btn" :disabled="!editMode" type="submit" value="Save Edits">
-            <a v-if="editMode" href="" @click.prevent="exitEdit">
+            <!-- <a v-if="editMode" href="" @click.prevent="exitEdit">
                 <img class="icon" src="icons/exit-edit-icon.svg" alt="exit edit transaction mode" />
-            </a>
+            </a> -->
         </p>
     </form>
 </template>
@@ -76,7 +76,7 @@ export default {
             this.editMode = true;
             this.editId = this.editTransaction.id;
             this.description = this.editTransaction.description;
-            this.date = this.editTransaction.date;
+            this.date = this.editTransaction.date.slice(0, 10);
             this.debit = this.editTransaction.debit;
             this.bank_select = this.editTransaction.account;
         } else {
@@ -141,6 +141,7 @@ export default {
             }
         },
         exitEdit: function() {
+            this.$emit('exitEdit');
             this.editMode = false;
             this.editId = -1;
             this._debugVals();

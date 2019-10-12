@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span class="transaction_account">{{ transaction.account }}</span>
+        <span class="transaction_account">{{ banks[transaction.account] }}</span>
         <span class="transaction_date">{{ transaction.date }}</span> 
         <span class="transaction_desc">{{ transaction.description }}</span>
         <span class="transaction_debit">${{ transaction.debit }}</span>
@@ -28,7 +28,12 @@ export default {
         editId: {
             type: Number,
             required: true
+        },
+        banks: {
+            type: Array,
+            required: true
         }
-    }
+    },
+
 }
 </script>
