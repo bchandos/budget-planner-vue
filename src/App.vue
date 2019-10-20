@@ -6,14 +6,13 @@
                 <p></p>
             </template>
             <template v-slot:body>        
-                <InputForm 
+                <TransactionForm 
                     v-bind:editTransaction="editTransaction"
                     @transactionCreated="transactionCreated"
                     @transactionEdited="transactionEdited"
                     @exitEdit="exitEdit"
                     />
             </template>
-
         </modal>
 
         <TransactionList 
@@ -29,14 +28,14 @@
 
 <script>
 import TransactionList from './components/TransactionList.vue';
-import InputForm from './components/InputForm.vue';
+import TransactionForm from './components/TransactionForm.vue';
 import Modal from './components/Modal.vue';
 
 export default {
     name: 'app',
     components: {
         TransactionList,
-        InputForm,
+        TransactionForm,
         Modal
     },
     data() {

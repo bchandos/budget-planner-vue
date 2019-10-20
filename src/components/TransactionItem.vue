@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span class="transaction_account">{{ banks[transaction.account] }}</span>
+        <span class="transaction_account">{{ bank }}</span>
         <span class="transaction_date">{{ transaction.date }}</span> 
         <span class="transaction_desc">{{ transaction.description }}</span>
         <span class="transaction_debit">${{ transaction.debit }}</span>
@@ -29,8 +29,8 @@ export default {
             type: Number,
             required: true
         },
-        banks: {
-            type: Array,
+        bank: {
+            type: String,
             required: true
         }
     },

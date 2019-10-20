@@ -9,7 +9,7 @@
                 <span><strong>Edit</strong></span>
                 <span><strong>Delete</strong></span>
             </div>
-        <div v-if="transactions.length">
+        <div v-if="transactions.length && banks.length">
             <TransactionItem 
                 v-for="transaction in sortedTransactions" 
                 v-bind:class="{ editing: transaction.id == editId, not_editing: transaction.id != editId }"
@@ -17,7 +17,7 @@
                 v-bind:transaction="transaction"
                 v-bind:editMode="editMode"
                 v-bind:editId="editId"
-                v-bind:banks="banks"
+                v-bind:bank="banks[transaction.account]"
                 @edit="sendToEdit"
                 @delete="deleteTrans"
                 @edit-off="$emit('exitEdit')"
