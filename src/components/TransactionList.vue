@@ -9,7 +9,7 @@
                 <span><strong>Edit</strong></span>
                 <span><strong>Delete</strong></span>
             </div>
-        <div v-if="transactions.length && banks.length">
+        <div v-if="transactions.length">
             <TransactionItem 
                 v-for="transaction in sortedTransactions" 
                 v-bind:class="{ editing: transaction.id == editId, not_editing: transaction.id != editId }"
@@ -73,7 +73,7 @@ export default {
         const response_accounts = await fetch('http://127.0.0.1:8080/api/v0.1/accounts');
         const json_accounts = await response_accounts.json();
         json_accounts.payload.forEach((e) => {
-            this.banks[e.id] = e.name;
+            this.$set(this.banks, e.id, e.name);
             }
         );
     },
@@ -122,7 +122,6 @@ export default {
             return transactions_copy.sort(function(a, b) {return a.date > b.date});
             // return this.transactions.slice(0).sort(function(a, b) {return a.date > b.date});
         },
-        
     },
 }
 </script>
