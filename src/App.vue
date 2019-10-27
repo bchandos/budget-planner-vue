@@ -22,7 +22,9 @@
                 <p></p>
             </template>
             <template v-slot:body>        
-                <ImportForm/>
+                <ImportForm
+                    @transactionCreated="transactionCreated"
+                />
             </template>
         </modal>
 

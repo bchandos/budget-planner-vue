@@ -92,8 +92,8 @@ export default {
         createdTransaction: function() {
             if (this.createdTransaction) {
                 this.transactions.push(this.createdTransaction);
-                // this.createdTransaction = null;
-            }
+                this.transactions = this.transactions.flat(Infinity);
+                }
         },
         gEditMode: function() {
             this.editMode = this.gEditMode;

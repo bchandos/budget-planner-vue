@@ -45,11 +45,14 @@ export default {
             let form_data = new FormData();
             form_data.append('file_upload', this.file);
             form_data.append('bank_id', this.bank_select);
-            console.log(form_data);
             const response = await fetch(url, {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 body: form_data // body data type must match "Content-Type" header
                 });
+            if (response.status==201) {
+                let json = await response.json();
+                this.$emit('transactionCreated', json.payload['new_transactions']);
+            }
         }
     }
 }
