@@ -1,6 +1,6 @@
 <template>
     <form id="transaction_form" v-bind:class="{ editing: editMode, not_editing: !editMode }" v-on:submit.prevent="postData" method="POST">
-        <input type="hidden" v-model="id">
+        <input type="hidden" v-model="editId">
         <p class="form_els">
             <label class="transaction_form_label" for="date">Date:</label>
             <input type="date" v-model="date" id="date">
@@ -60,7 +60,7 @@ export default {
             categories: [{text: 'dick butts', value: 1},            
                          {text: 'butt dicks', value: 2}, 
                          {text: 'boobies', value: 3}],
-            banks: [],
+            banks: {},
         }
     },
     created: async function () {
@@ -69,7 +69,7 @@ export default {
         const response_accounts = await fetch('http://127.0.0.1:8080/api/v0.1/accounts');
         const json_accounts = await response_accounts.json();
         json_accounts.payload.forEach((e) => {
-            this.banks.push({text: e.name, value: e.id});
+            this.$set(this.banks, e.id, e.name);
             }
         );
         if (this.editTransaction) {
@@ -152,7 +152,8 @@ export default {
             let d = new Date(Math.random()*3000000000000);
             this.date = d.toISOString().slice(0, 10);
             this.debit = Math.floor(Math.random()*1000);
-            this.bank_select = this.banks[Math.floor(Math.random()*this.banks.length)].value
+            let o_keys = Object.keys(this.banks);
+            this.bank_select = this.banks[o_keys[Math.floor(Math.random()*o_keys.length)]];
             this.category_select = 1;
         }
     }

@@ -17,7 +17,7 @@
                 v-bind:transaction="transaction"
                 v-bind:editMode="editMode"
                 v-bind:editId="editId"
-                v-bind:bank="banks[transaction.account]"
+                v-bind:bank="banks[transaction.account] || ''"
                 @edit="sendToEdit"
                 @delete="deleteTrans"
                 @edit-off="$emit('exitEdit')"
@@ -38,11 +38,13 @@ export default {
     },
     props: {
         editedTransaction: {
-            type: Object,
+            // use a custom validator as empty objects are not falsy
+            validator: prop => typeof prop === 'object' || prop === null,
             required: true
         },
         createdTransaction: {
-            type: Object,
+            // use a custom validator as empty objects are not falsy
+            validator: prop => typeof prop === 'object' || prop === null,
             required: true
         },
         gEditMode: {
@@ -58,7 +60,7 @@ export default {
         return {
             transactions: [],
             editMode: false,
-            banks: []
+            banks: {}
         }
     },
     created: async function() {

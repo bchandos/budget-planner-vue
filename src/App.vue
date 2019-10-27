@@ -1,7 +1,8 @@
 <template>
     <div id="app">
-        <button type="button" class="btn" @click="showModal">Add New Transaction</button>
-        <modal v-show="isModalVisible" @close="closeModal">
+        <button type="button" class="btn" @click="showTransModal">Add New Transaction</button>
+        <button type="button" class="btn" @click="showImportModal">Import Transactions</button>
+        <modal v-if="modalType == 'transaction'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
                 <p></p>
             </template>
@@ -12,6 +13,15 @@
                     @transactionEdited="transactionEdited"
                     @exitEdit="exitEdit"
                     />
+            </template>
+        </modal>
+
+        <modal v-else-if="modalType == 'import'" v-show="isModalVisible" @close="closeModal">
+            <template v-slot:header>
+                <p></p>
+            </template>
+            <template v-slot:body>        
+                <ImportForm/>
             </template>
         </modal>
 
@@ -29,6 +39,7 @@
 <script>
 import TransactionList from './components/TransactionList.vue';
 import TransactionForm from './components/TransactionForm.vue';
+import ImportForm from './components/ImportForm.vue';
 import Modal from './components/Modal.vue';
 
 export default {
@@ -36,7 +47,8 @@ export default {
     components: {
         TransactionList,
         TransactionForm,
-        Modal
+        ImportForm,
+        Modal,
     },
     data() {
         return {
@@ -45,13 +57,14 @@ export default {
             createdTransaction: null, // transaction that has been created
             editMode: false,
             editId: -1,
-            isModalVisible: false
+            isModalVisible: false,
+            modalType: '',
         }
     },
     
     methods: {
         exitEdit: function() {
-            this.isModalVisible = false;
+            // this.isModalVisible = false;
             this.editMode = false;
             this.editTransaction = null;
             this.editId = -1;
@@ -71,13 +84,20 @@ export default {
             this.editTransaction = t;
             this.editMode = true;
             this.editId = t.id;
+            this.modalType = 'transaction';
             this.isModalVisible = true;
         },
-        showModal: function() {
+        showTransModal: function() {
+            this.modalType = 'transaction';
+            this.isModalVisible = true;
+        },
+        showImportModal: function() {
+            this.modalType = 'import';
             this.isModalVisible = true;
         },
         closeModal: function() {
             this.isModalVisible = false;
+            this.modalType = '';
             this.exitEdit();
         }
         
