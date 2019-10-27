@@ -1,8 +1,8 @@
 <template>
-    <form id="import_form" v-on:submit.prevent="postData" method="POST" enctype="multipart/form-data">
+    <form id="import_form" v-on:submit.prevent="postData" method="POST">
         <p class="form_els">
             <label for="file_upload">Select File:</label>
-            <input type="file" name="file_upload">
+            <input type="file" ref="fileUpload" @change="processFile">
         </p>
         <p class="form_els">
             <label class="transaction_form_label" for="bank_select">Bank:</label>
@@ -12,8 +12,8 @@
                 </option>
             </select>
         </p>
-        <p class="form_els">
-            <input type="submit" value="Import">
+        <p class="form_els" style="text-align: center;">
+            <input type="submit" value="Import" class="btn">
         </p>
     </form>
 </template>
@@ -22,7 +22,8 @@ export default {
     data () {
         return {
             banks: [],
-            bank_select: null
+            bank_select: null,
+            file: null,
         }
     },
     created: async function () {
@@ -36,15 +37,18 @@ export default {
         );
     },
     methods: {
+        processFile: function () {
+            this.file = this.$refs.fileUpload.files[0];
+        },
         postData: async function() {
             let url = 'http://127.0.0.1:8080/api/v0.1/import_transactions';
-            let form_data = {};
+            let form_data = new FormData();
+            form_data.append('file_upload', this.file);
+            form_data.append('bank_id', this.bank_select);
+            console.log(form_data);
             const response = await fetch(url, {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                body: null // body data type must match "Content-Type" header
+                body: form_data // body data type must match "Content-Type" header
                 });
         }
     }

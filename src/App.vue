@@ -2,6 +2,7 @@
     <div id="app">
         <button type="button" class="btn" @click="showTransModal">Add New Transaction</button>
         <button type="button" class="btn" @click="showImportModal">Import Transactions</button>
+        <button type="button" class="btn" @click="showAccountModal">Account Settings</button>
         <modal v-if="modalType == 'transaction'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
                 <p></p>
@@ -25,6 +26,15 @@
             </template>
         </modal>
 
+        <modal v-else-if="modalType == 'accounts'" v-show="isModalVisible" @close="closeModal">
+            <template v-slot:header>
+                <p></p>
+            </template>
+            <template v-slot:body>        
+                <AccountForm/>
+            </template>
+        </modal>
+
         <TransactionList 
             v-bind:editedTransaction="editedTransaction"
             v-bind:createdTransaction="createdTransaction"
@@ -40,6 +50,7 @@
 import TransactionList from './components/TransactionList.vue';
 import TransactionForm from './components/TransactionForm.vue';
 import ImportForm from './components/ImportForm.vue';
+import AccountForm from './components/AccountForm.vue';
 import Modal from './components/Modal.vue';
 
 export default {
@@ -48,6 +59,7 @@ export default {
         TransactionList,
         TransactionForm,
         ImportForm,
+        AccountForm,
         Modal,
     },
     data() {
@@ -93,6 +105,10 @@ export default {
         },
         showImportModal: function() {
             this.modalType = 'import';
+            this.isModalVisible = true;
+        },
+        showAccountModal: function() {
+            this.modalType = 'account';
             this.isModalVisible = true;
         },
         closeModal: function() {

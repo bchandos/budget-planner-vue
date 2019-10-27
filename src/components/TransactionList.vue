@@ -60,6 +60,8 @@ export default {
         return {
             transactions: [],
             editMode: false,
+            // banks is an object here so it can easily be passed via bracketed lookup
+            // this also seemed to solve async issues, but I'm not sure why...
             banks: {}
         }
     },

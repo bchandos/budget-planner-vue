@@ -32,9 +32,6 @@
         <p class="form_els">
             <input class="btn" :disabled="editMode" type="submit" value="Submit">
             <input class="btn" :disabled="!editMode" type="submit" value="Save Edits">
-            <!-- <a v-if="editMode" href="" @click.prevent="exitEdit">
-                <img class="icon" src="icons/exit-edit-icon.svg" alt="exit edit transaction mode" />
-            </a> -->
         </p>
     </form>
 </template>
@@ -60,7 +57,9 @@ export default {
             categories: [{text: 'dick butts', value: 1},            
                          {text: 'butt dicks', value: 2}, 
                          {text: 'boobies', value: 3}],
-            banks: {},
+            // banks is an array here, because that works better for select option loops
+            // does this have async issues?
+            banks: [],
         }
     },
     created: async function () {
@@ -69,7 +68,7 @@ export default {
         const response_accounts = await fetch('http://127.0.0.1:8080/api/v0.1/accounts');
         const json_accounts = await response_accounts.json();
         json_accounts.payload.forEach((e) => {
-            this.$set(this.banks, e.id, e.name);
+            this.banks.push({text: e.name, value: e.id});
             }
         );
         if (this.editTransaction) {
@@ -152,8 +151,7 @@ export default {
             let d = new Date(Math.random()*3000000000000);
             this.date = d.toISOString().slice(0, 10);
             this.debit = Math.floor(Math.random()*1000);
-            let o_keys = Object.keys(this.banks);
-            this.bank_select = this.banks[o_keys[Math.floor(Math.random()*o_keys.length)]];
+            this.bank_select = this.banks[Math.floor(Math.random()*this.banks.length)].value;
             this.category_select = 1;
         }
     }
