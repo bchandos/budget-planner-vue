@@ -92,6 +92,8 @@ export default {
         createdTransaction: function() {
             if (this.createdTransaction) {
                 this.transactions.push(this.createdTransaction);
+                // we flatten the array because the created transaction may be an array
+                // when we import from file
                 this.transactions = this.transactions.flat(Infinity);
                 }
         },

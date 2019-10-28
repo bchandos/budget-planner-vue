@@ -135,6 +135,7 @@ export default {
                     let json = await response.json();
                     // emit the deleted transaction
                     this.$emit('transactionEdited', json.payload);
+                    this.$emit('close');
                     this.exitEdit();
                 }
             }

@@ -1,7 +1,7 @@
 <template>
     <div>
         <span class="transaction_account">{{ bank }}</span>
-        <span class="transaction_date">{{ transaction.date }}</span> 
+        <span class="transaction_date">{{ transaction.date | neatDate }}</span> 
         <span class="transaction_desc">{{ transaction.description }}</span>
         <span class="transaction_debit">${{ transaction.debit }}</span>
         <span>
@@ -34,6 +34,11 @@ export default {
             required: true
         }
     },
-
+    filters: {
+        neatDate: function(value) {
+            let d = value.split('T')[0];
+            return d.slice(5,7) + '/' + d.slice(8,10) + '/' + d.slice(0,4);
+        }
+    },
 }
 </script>

@@ -13,6 +13,7 @@
                     @transactionCreated="transactionCreated"
                     @transactionEdited="transactionEdited"
                     @exitEdit="exitEdit"
+                    @close="closeModal"
                     />
             </template>
         </modal>
@@ -29,7 +30,7 @@
             </template>
         </modal>
 
-        <modal v-else-if="modalType == 'accounts'" v-show="isModalVisible" @close="closeModal">
+        <modal v-else-if="modalType == 'account'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
                 <p></p>
             </template>
@@ -128,7 +129,7 @@ export default {
 <style>
     .transaction_form_label {
         display:inline-block;
-        min-width: 7em;
+        width: 7em;
         margin-left: 1em;
     }
     .form_els {
@@ -136,19 +137,19 @@ export default {
     }
     .transaction_account {
         display: inline-block;
-        min-width: 11em;
+        width: 11em;
     }
     .transaction_date {
         display: inline-block;
-        min-width: 11em;
+        width: 11em;
     }
     .transaction_desc {
         display: inline-block;
-        min-width: 20em;
+        width: 20em;
     }
     .transaction_debit {
         display: inline-block;
-        min-width: 4em;
+        width: 4em;
     }
     .not_editing:nth-child(even) {
         background-color: rgba(211, 211, 211, 0.5);
