@@ -52,6 +52,7 @@ export default {
             if (response.status==201) {
                 let json = await response.json();
                 this.$emit('transactionCreated', json.payload['new_transactions']);
+                this.$emit('close');
             }
         }
     }

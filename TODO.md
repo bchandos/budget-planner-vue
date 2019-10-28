@@ -1,4 +1,2 @@
-- Figure out created: async business
-    - is there a synchronous way to "Fetch" from an api?
-    - just use xhttprequest?
-    - or is there another way for vue to "wait" for specific data?
+- Convert spans to flex divs
+- Auto close import modal on success (x)

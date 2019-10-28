@@ -24,6 +24,7 @@
             <template v-slot:body>        
                 <ImportForm
                     @transactionCreated="transactionCreated"
+                    @close="closeModal"
                 />
             </template>
         </modal>
@@ -141,7 +142,6 @@ export default {
         display: inline-block;
         min-width: 11em;
     }
-
     .transaction_desc {
         display: inline-block;
         min-width: 20em;
