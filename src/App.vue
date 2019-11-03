@@ -35,7 +35,8 @@
                 <p></p>
             </template>
             <template v-slot:body>        
-                <AccountForm/>
+                <AccountForm
+                @deleted="refreshOn"/>
             </template>
         </modal>
 
@@ -44,9 +45,11 @@
             v-bind:createdTransaction="createdTransaction"
             v-bind:gEditMode="editMode"
             v-bind:editId="editId"
+            v-bind:maybeConsiderRefreshing="refreshSignal"
             @sendToEdit="sendToEdit"
             @exitEdit="exitEdit"
-             />
+            @refreshed="refreshOff"
+            />
     </div>
 </template>
 
@@ -75,6 +78,7 @@ export default {
             editId: -1,
             isModalVisible: false,
             modalType: '',
+            refreshSignal: false,
         }
     },
     
@@ -119,6 +123,12 @@ export default {
             this.isModalVisible = false;
             this.modalType = '';
             this.exitEdit();
+        },
+        refreshOn: function() {
+            this.refreshSignal = true;
+        },
+        refreshOff: function() {
+            this.refreshSignal = false;
         }
         
     },

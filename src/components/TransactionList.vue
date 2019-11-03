@@ -55,6 +55,10 @@ export default {
             type: Number,
             required: true
         },
+        maybeConsiderRefreshing: {
+            type: Boolean,
+            required: true
+        }
     },
     data() {
         return {
@@ -99,6 +103,19 @@ export default {
         },
         gEditMode: function() {
             this.editMode = this.gEditMode;
+        },
+        maybeConsiderRefreshing: async function() {
+            // Fetch transactions from API
+            const response_trans = await fetch('http://127.0.0.1:8080/api/v0.1/transactions');
+            const json_trans = await response_trans.json();
+            this.transactions = json_trans.payload;
+            // Fetch accounts from API
+            const response_accounts = await fetch('http://127.0.0.1:8080/api/v0.1/accounts');
+            const json_accounts = await response_accounts.json();
+            json_accounts.payload.forEach((e) => {
+                this.$set(this.banks, e.id, e.name);
+            });
+            this.$emit('refreshed')
         }
     },
     methods: {
