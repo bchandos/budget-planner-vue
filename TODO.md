@@ -1,2 +1,5 @@
-- Convert spans to flex divs
-- Auto close import modal on success (x)
+- Convert spans to flex divs for mobile optimization
+- ~~Auto close import modal on success~~
+- Account editing
+    - ~~Account form~~
+    - 

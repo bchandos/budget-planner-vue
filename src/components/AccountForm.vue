@@ -14,15 +14,15 @@
         </p>
         <p class="form_els">
             <label class="transaction_form_label" for="filename_re">Filename Regex:</label>
-            <input name="filename_re" v-model="bank_settings.filename_re">
+            <input name="filename_re" v-model="bank.filename_re">
         </p>
         <p class="form_els">
             <label class="transaction_form_label" for="debit_positive">Debit is positive:</label>
-            <input type="checkbox" name="debit_positive" v-model="bank_settings.debit_positive">
+            <input type="checkbox" name="debit_positive" v-model="bank.debit_positive">
         </p>
         <p class="form_els">
             <label class="transaction_form_label" for="date_format">Date Format:</label>
-            <input name="date_format" v-model="bank_settings.date_format">
+            <input name="date_format" v-model="bank.date_format">
         </p>
         <p class="form_els">
             <input :disabled="!bank_select" type="submit" value="Save" class="btn">
@@ -37,7 +37,7 @@ export default {
             banks: [],
             bank: {},
             bank_select: null,
-            bank_settings: {}
+            
         }
     },
     created: async function () {
@@ -53,7 +53,6 @@ export default {
     watch: {
         bank_select: function() {
             this.bank = this.banks.find((e) => { return e.id == this.bank_select });
-            this.bank_settings = this.banks.find((e) => { return e.id == this.bank_select }).settings;
         }
     },
     methods: {
@@ -61,9 +60,9 @@ export default {
             let url = 'http://127.0.0.1:8080/api/v0.1/accounts/' + this.bank_select;
             let form_data = {
                 'name': this.bank.name,
-                'filename_re': this.bank_settings.filename_re,
-                'debit_positive': this.bank_settings.debit_positive,
-                'date_format': this.bank_settings.date_format,
+                'filename_re': this.bank.filename_re,
+                'debit_positive': this.bank.debit_positive,
+                'date_format': this.bank.date_format,
             }
             const response = await fetch(url, {
                 method: 'PUT', // *GET, POST, PUT, DELETE, etc.
