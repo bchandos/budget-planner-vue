@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import { store } from './store.js';
 import TransactionList from './components/TransactionList.vue';
 import TransactionForm from './components/TransactionForm.vue';
 import ImportForm from './components/ImportForm.vue';
