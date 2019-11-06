@@ -32,12 +32,35 @@ export var store = {
     },
     async addTransaction(transaction) {
         // add transaction via API and push to global state
+        const url = 'http://127.0.0.1:8080/api/v0.1/transaction';
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaction)
+        });
     },
-    async addTransactions(transactions) {
+    async importTransactions(file_obj, account_id) {
         // add multiple transactions via API and push to global state
+        const url = 'http://127.0.0.1:8080/api/v0.1/import_transactions';
+        const form_data = new FormData();
+        form_data.append('file_upload', file_obj);
+        form_data.append('bank_id', account_id);
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            body: form_data // body data type must match "Content-Type" header
+            });
     },
     async deleteTransaction(transaction_id) {
         // delete transaction via API and remove from global state
+        const url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + transaction_id;
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     },
     async addBank(bank) {
         // add bank via API and push to global state

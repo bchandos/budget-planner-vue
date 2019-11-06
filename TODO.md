@@ -1,3 +1,4 @@
+- Add simple state management (branch)
 - Convert spans to flex divs for mobile optimization
 - ~~Auto close import modal on success~~
 - Account editing
