@@ -5,8 +5,8 @@
         <span class="transaction_desc">{{ transaction.description }}</span>
         <span class="transaction_debit">${{ transaction.debit | neatNumber }}</span>
         <span>
-            <input class="icon" type="image" src="icons/edit-icon.svg" v-if="!sharedState.transactionEdit.transactionEditMode || transaction.id != sharedState.transactionEdit.transactionEditId" href="" @click="toggleEdit">
-            <input class="icon" type="image" src="icons/exit-edit-icon.svg" v-if="sharedState.transactionEdit.transactionEditMode && transaction.id == sharedState.transactionEdit.transactionEditId" href="" @click="toggleEdit">
+            <input class="icon" type="image" src="icons/edit-icon.svg" v-if="!sharedState.transactionEdit.editMode || transaction.id != sharedState.transactionEdit.editId" href="" @click="toggleEdit">
+            <input class="icon" type="image" src="icons/exit-edit-icon.svg" v-if="sharedState.transactionEdit.editMode && transaction.id == sharedState.transactionEdit.editId" href="" @click="toggleEdit">
         </span>
         <span>
             <input class="icon" type="image" src="icons/delete-icon.svg" href="" @click="deleteTrans">
@@ -40,7 +40,7 @@ export default {
             }
         },
         toggleEdit() {
-            if (this.sharedState.transactionEdit.transactionEditMode == true) {
+            if (this.sharedState.transactionEdit.editMode == true) {
                 store.exitEditMode();
             } else {
                 store.enterEditMode(this.transaction);

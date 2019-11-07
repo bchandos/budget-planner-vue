@@ -3,9 +3,9 @@ export const store = {
         banks: [],
         transactions: [],
         transactionEdit: {
-            transactionEditMode: false,
-            transactionEditId: -1,
-            editTransaction: null,
+            editMode: false,
+            editId: -1,
+            transaction: null,
         },
         toastMessage: '',
     },
@@ -144,14 +144,14 @@ export const store = {
         this.toastMessage = '';
     },
     enterEditMode(transaction) {
-        this.state.transactionEdit.transactionEditMode = true;
-        this.state.transactionEdit.transactionEditId = transaction.id;
-        this.state.transactionEdit.editTransaction = transaction;
+        this.state.transactionEdit.editMode = true;
+        this.state.transactionEdit.editId = transaction.id;
+        this.state.transactionEdit.transaction = transaction;
     },
     exitEditMode() {
-        this.state.transactionEdit.transactionEditMode = false;
-        this.state.transactionEdit.transactionEditId = -1;
-        this.state.transactionEdit.editTransaction = null;
+        this.state.transactionEdit.editMode = false;
+        this.state.transactionEdit.editId = -1;
+        this.state.transactionEdit.transaction = null;
     },
 
 };

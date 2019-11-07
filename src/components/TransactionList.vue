@@ -12,7 +12,7 @@
         <div v-if="sharedState.transactions.length">
             <TransactionItem 
                 v-for="transaction in sortedTransactions" 
-                v-bind:class="{ editing: transaction.id == sharedState.transactionEdit.transactionEditId, not_editing: transaction.id != sharedState.transactionEdit.transactionEditId }"
+                v-bind:class="{ editing: transaction.id == sharedState.transactionEdit.editId, not_editing: transaction.id != sharedState.transactionEdit.editId }"
                 v-bind:key="transaction.id"
                 v-bind:transaction="transaction"
                 />

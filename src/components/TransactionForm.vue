@@ -1,6 +1,6 @@
 <template>
-    <form id="transaction_form" v-bind:class="{ editing: sharedState.transactionEdit.transactionEditMode, not_editing: !sharedState.transactionEdit.transactionEditMode }" v-on:submit.prevent="sendTrans" method="POST">
-        <input type="hidden" v-model="sharedState.transactionEdit.transactionEditId">
+    <form id="transaction_form" v-bind:class="{ editing: sharedState.transactionEdit.editMode, not_editing: !sharedState.transactionEdit.editMode }" v-on:submit.prevent="sendTrans" method="POST">
+        <input type="hidden" v-model="sharedState.transactionEdit.editId">
         <p class="form_els">
             <label class="transaction_form_label" for="date">Date:</label>
             <input type="date" v-model="date" id="date">
@@ -30,8 +30,8 @@
             <input v-model.number="debit" id="debit" placeholder="debit">
         </p>
         <p class="form_els">
-            <input class="btn" :disabled="sharedState.transactionEdit.transactionEditMode" type="submit" value="Submit">
-            <input class="btn" :disabled="!sharedState.transactionEdit.transactionEditMode" type="submit" value="Save Edits">
+            <input class="btn" :disabled="sharedState.transactionEdit.editMode" type="submit" value="Submit">
+            <input class="btn" :disabled="!sharedState.transactionEdit.editMode" type="submit" value="Save Edits">
         </p>
     </form>
 </template>
@@ -57,11 +57,11 @@ export default {
         }
     },
     created: function() {
-        if (this.sharedState.transactionEdit.transactionEditMode) {
-            this.description = this.sharedState.transactionEdit.editTransaction.description;
-            this.bank_select = this.sharedState.transactionEdit.editTransaction.account;
-            this.date = this.sharedState.transactionEdit.editTransaction.date;
-            this.debit = this.sharedState.transactionEdit.editTransaction.debit;
+        if (this.sharedState.transactionEdit.editMode) {
+            this.description = this.sharedState.transactionEdit.transaction.description;
+            this.bank_select = this.sharedState.transactionEdit.transaction.account;
+            this.date = this.sharedState.transactionEdit.transaction.date;
+            this.debit = this.sharedState.transactionEdit.transaction.debit;
         }
     },
     methods: {
@@ -72,8 +72,8 @@ export default {
                 'debit': this.debit,
                 'account': this.bank_select,
             }
-            if (this.sharedState.transactionEdit.transactionEditMode) {
-                transaction.id = this.sharedState.transactionEdit.transactionEditId;
+            if (this.sharedState.transactionEdit.editMode) {
+                transaction.id = this.sharedState.transactionEdit.editId;
                 store.editTransaction(transaction);
             } else {
                 store.addTransaction(transaction);
