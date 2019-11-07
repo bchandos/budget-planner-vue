@@ -69,7 +69,18 @@ export default {
             store.loadTransactions();
             store.loadBanks();
     },
-
+    computed: {
+        inEditMode: function() {
+            return this.sharedState.transactionEdit.editMode;
+        }
+    },
+    watch: {
+        inEditMode() {
+            if (this.sharedState.transactionEdit.editMode) {
+                this.showTransModal();
+            }
+        }
+    },
     methods: {
         showTransModal: function() {
             this.modalType = 'transaction';

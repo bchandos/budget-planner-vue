@@ -52,7 +52,20 @@ export const store = {
         }
     },
     async editTransaction(transaction) {
-        // ...
+        // send edited transaction to API and then update global state
+        const url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + transaction.id;
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(transaction)
+        });
+        const json_response = await response.json();
+        if (json_response.status == 'success') {
+            this.state.transactions = this.state.transactions.filter(function(o) { return o.id != transaction.id });
+            this.state.transactions.push(json_response.payload);
+        } else {
+            this.setToastMessage('Failed to edit transaction: ' + json_response.payload.error_message);
+        }
         this.exitEditMode();
     },
     async importTransactions(file_obj, account_id) {

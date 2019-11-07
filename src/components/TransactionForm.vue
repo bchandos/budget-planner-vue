@@ -60,7 +60,7 @@ export default {
         if (this.sharedState.transactionEdit.editMode) {
             this.description = this.sharedState.transactionEdit.transaction.description;
             this.bank_select = this.sharedState.transactionEdit.transaction.account;
-            this.date = this.sharedState.transactionEdit.transaction.date;
+            this.date = this.sharedState.transactionEdit.transaction.date.slice(0, 10);
             this.debit = this.sharedState.transactionEdit.transaction.debit;
         }
     },
