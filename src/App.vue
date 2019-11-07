@@ -41,11 +41,6 @@
         </modal>
 
         <TransactionList 
-            v-bind:editedTransaction="editedTransaction"
-            v-bind:createdTransaction="createdTransaction"
-            v-bind:gEditMode="editMode"
-            v-bind:editId="editId"
-            v-bind:maybeConsiderRefreshing="refreshSignal"
             @sendToEdit="sendToEdit"
             @exitEdit="exitEdit"
             @refreshed="refreshOff"
@@ -72,6 +67,7 @@ export default {
     },
     data() {
         return {
+            sharedState: store.state,
             editTransaction: null, // transaction to edit
             editedTransaction: null, // transaction that has been edited
             createdTransaction: null, // transaction that has been created
@@ -82,7 +78,10 @@ export default {
             refreshSignal: false,
         }
     },
-    
+    created: function() {
+            store.loadTransactions();
+            store.loadBanks();
+    },
     methods: {
         exitEdit: function() {
             // this.isModalVisible = false;

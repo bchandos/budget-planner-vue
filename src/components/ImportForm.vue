@@ -18,9 +18,12 @@
     </form>
 </template>
 <script>
+import { store } from '../store.js';
+
 export default {
     data () {
         return {
+            sharedState: store.state,
             banks: [],
             bank_select: null,
             file: null,

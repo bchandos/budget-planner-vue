@@ -37,6 +37,9 @@
 </template>
 
 <script>
+
+import { store } from '../store.js';
+
 export default {
     props: {
         editTransaction: {
@@ -47,6 +50,7 @@ export default {
     },
     data() {
         return {
+            sharedState: store.state,
             editMode: false,
             editId: -1,
             description: '',

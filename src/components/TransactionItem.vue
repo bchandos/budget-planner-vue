@@ -1,12 +1,12 @@
 <template>
     <div>
-        <span class="transaction_account">{{ bank }}</span>
+        <span class="transaction_account">{{ bankName(transaction.account) }}</span>
         <span class="transaction_date">{{ transaction.date | neatDate }}</span> 
         <span class="transaction_desc">{{ transaction.description }}</span>
         <span class="transaction_debit">${{ transaction.debit | neatNumber }}</span>
         <span>
-            <input class="icon" type="image" src="icons/edit-icon.svg" v-if="!editMode || transaction.id != editId" href="" @click="$emit('edit', transaction)">
-            <input class="icon" type="image" src="icons/exit-edit-icon.svg" v-if="editMode && transaction.id == editId" href="" @click="$emit('edit-off')">
+            <input class="icon" type="image" src="icons/edit-icon.svg" v-if="!sharedState.transactionEdit.transactionEditMode || transaction.id != editId" href="" @click="$emit('edit', transaction)">
+            <input class="icon" type="image" src="icons/exit-edit-icon.svg" v-if="sharedState.transactionEdit.transactionEditMode && transaction.id == editId" href="" @click="$emit('edit-off')">
         </span>
         <span>
             <input class="icon" type="image" src="icons/delete-icon.svg" href="" @click="$emit('delete', transaction)">
@@ -15,24 +15,28 @@
 </template>
 
 <script>
+
+import { store } from '../store.js';
+
 export default {
+    data() {
+        return {
+            sharedState: store.state,
+        }
+    },
     props: {
         transaction: {
             type: Object,
             required: true
-        },
-        editMode: {
-            type: Boolean,
-            required: true
-        },
-        editId: {
-            type: Number,
-            required: true
-        },
-        bank: {
-            type: String,
-            required: true
         }
+    },
+    methods: {
+        bankName(bank_id) {
+            // let bank_id = this.transaction.account;
+            return this.sharedState.banks.find(function(o) { return o.id == bank_id }).name;
+        },
+    },
+    computed: {
     },
     filters: {
         neatDate: function(value) {
@@ -41,7 +45,7 @@ export default {
         },
         neatNumber: function(value) {
             return Number.parseFloat(value).toFixed(2);
-        }
+        },
     },
 }
 </script>
