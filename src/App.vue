@@ -3,16 +3,13 @@
         <button type="button" class="btn" @click="showTransModal">Add New Transaction</button>
         <button type="button" class="btn" @click="showImportModal">Import Transactions</button>
         <button type="button" class="btn" @click="showAccountModal">Account Settings</button>
+        
         <modal v-if="modalType == 'transaction'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
                 <p></p>
             </template>
             <template v-slot:body>        
                 <TransactionForm 
-                    v-bind:editTransaction="editTransaction"
-                    @transactionCreated="transactionCreated"
-                    @transactionEdited="transactionEdited"
-                    @exitEdit="exitEdit"
                     @close="closeModal"
                     />
             </template>
@@ -35,16 +32,11 @@
                 <p></p>
             </template>
             <template v-slot:body>        
-                <AccountForm
-                @deleted="refreshOn"/>
+                <AccountForm />
             </template>
         </modal>
 
-        <TransactionList 
-            @sendToEdit="sendToEdit"
-            @exitEdit="exitEdit"
-            @refreshed="refreshOff"
-            />
+        <TransactionList />
     </div>
 </template>
 
@@ -68,45 +60,17 @@ export default {
     data() {
         return {
             sharedState: store.state,
-            editTransaction: null, // transaction to edit
-            editedTransaction: null, // transaction that has been edited
-            createdTransaction: null, // transaction that has been created
-            editMode: false,
-            editId: -1,
             isModalVisible: false,
             modalType: '',
-            refreshSignal: false,
         }
     },
+
     created: function() {
             store.loadTransactions();
             store.loadBanks();
     },
-    methods: {
-        exitEdit: function() {
-            // this.isModalVisible = false;
-            this.editMode = false;
-            this.editTransaction = null;
-            this.editId = -1;
-        },
 
-        transactionCreated: function(t) {
-            // console.log(t);
-            this.createdTransaction = t;
-        },
-        transactionEdited: function(t) {
-            // console.log(t);
-            this.editedTransaction = t;
-            this.editMode = false;
-            this.editId = -1;
-        },
-        sendToEdit: function(t) {
-            this.editTransaction = t;
-            this.editMode = true;
-            this.editId = t.id;
-            this.modalType = 'transaction';
-            this.isModalVisible = true;
-        },
+    methods: {
         showTransModal: function() {
             this.modalType = 'transaction';
             this.isModalVisible = true;
@@ -122,14 +86,7 @@ export default {
         closeModal: function() {
             this.isModalVisible = false;
             this.modalType = '';
-            this.exitEdit();
         },
-        refreshOn: function() {
-            this.refreshSignal = true;
-        },
-        refreshOff: function() {
-            this.refreshSignal = false;
-        }
         
     },
 
@@ -147,15 +104,15 @@ export default {
     }
     .transaction_account {
         display: inline-block;
-        width: 11em;
+        width: 11em; 
     }
     .transaction_date {
         display: inline-block;
-        width: 11em;
+        width: 6em;
     }
     .transaction_desc {
         display: inline-block;
-        width: 20em;
+        width: 22em;
     }
     .transaction_debit {
         display: inline-block;

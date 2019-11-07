@@ -15,9 +15,6 @@
                 v-bind:class="{ editing: transaction.id == sharedState.transactionEdit.transactionEditId, not_editing: transaction.id != sharedState.transactionEdit.transactionEditId }"
                 v-bind:key="transaction.id"
                 v-bind:transaction="transaction"
-                @edit="sendToEdit"
-                @delete="deleteTrans"
-                @edit-off="$emit('exitEdit')"
                 />
         </div>
         <div v-else>

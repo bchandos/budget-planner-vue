@@ -52,7 +52,8 @@ export const store = {
         }
     },
     async editTransaction(transaction) {
-
+        // ...
+        this.exitEditMode();
     },
     async importTransactions(file_obj, account_id) {
         // add multiple transactions via API and push to global state
@@ -99,7 +100,7 @@ export const store = {
         });
         const json_response = await response.json()
         if (json_response.status=='success') {
-            this.state.banks.push(json_account.payload);
+            this.state.banks.push(json_response.payload);
         } else {
             this.setToastMessage('Failed to add new bank: ' + json_response.payload.error_message);
         }
@@ -115,7 +116,7 @@ export const store = {
         const json_response = await response.json()
         if (json_response.status=='success') {
             this.state.banks = this.state.banks.filter(function(o) { return o.id != bank.id });
-            this.state.banks.push(json_account.payload);
+            this.state.banks.push(json_response.payload);
         } else {
             this.setToastMessage('Failed to edit bank: ' + json_response.payload.error_message);
         }
