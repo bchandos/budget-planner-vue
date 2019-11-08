@@ -1,17 +1,18 @@
 <template>
-    <div>
-        <span class="transaction_account">{{ bankName(transaction.account) }}</span>
-        <span class="transaction_date">{{ transaction.date | neatDate }}</span> 
-        <span class="transaction_desc">{{ transaction.description }}</span>
-        <span class="transaction_debit">${{ transaction.debit | neatNumber }}</span>
-        <span>
+    <tr>
+        <td class="col col-1">{{ bankName(transaction.account) }}</td>
+        <td class="col col-2">{{ transaction.date | neatDate }}</td> 
+        <td class="col col-3">{{ transaction.description }}</td>
+        <td class="col col-3-5">$</td>
+        <td class="col col-4">{{ transaction.debit | neatNumber }}</td>
+        <td class="col col-5">
             <input class="icon" type="image" src="icons/edit-icon.svg" v-if="!sharedState.transactionEdit.editMode || transaction.id != sharedState.transactionEdit.editId" href="" @click="toggleEdit">
             <input class="icon" type="image" src="icons/exit-edit-icon.svg" v-if="sharedState.transactionEdit.editMode && transaction.id == sharedState.transactionEdit.editId" href="" @click="toggleEdit">
-        </span>
-        <span>
+        </td>
+        <td class="col col-6">
             <input class="icon" type="image" src="icons/delete-icon.svg" href="" @click="deleteTrans">
-        </span>
-    </div>
+        </td>
+    </tr>
 </template>
 
 <script>

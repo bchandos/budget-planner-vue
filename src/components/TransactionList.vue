@@ -1,25 +1,32 @@
 <template>
     <div>
         <h2>Transactions</h2>
-            <div>
-                <span class="transaction_account"><strong>Account</strong></span>
-                <span class="transaction_date"><strong>Date</strong></span>
-                <span class="transaction_desc"><strong>Description</strong></span>
-                <span class="transaction_debit"><strong>Debit</strong></span>
-                <span><strong>Edit</strong></span>
-                <span><strong>Delete</strong></span>
-            </div>
-        <div v-if="sharedState.transactions.length">
-            <TransactionItem 
-                v-for="transaction in sortedTransactions" 
-                v-bind:class="{ editing: transaction.id == sharedState.transactionEdit.editId, not_editing: transaction.id != sharedState.transactionEdit.editId }"
-                v-bind:key="transaction.id"
-                v-bind:transaction="transaction"
-                />
-        </div>
-        <div v-else>
-            <h2>No transactions to display</h2>
-        </div>
+        <table>
+            <tr class="row-header">
+                <th class="col col-1">Account</th>
+                <th class="col col-2">Date</th>
+                <th class="col col-3">Description</th>
+                <th class="col col-3-5"> </th>
+                <th class="col col-4">Debit</th>
+                <th class="col col-5">Edit</th>
+                <th class="col col-6">Delete</th>
+            </tr>
+            <template v-if="sharedState.transactions.length">
+                <TransactionItem 
+                    v-for="transaction in sortedTransactions" 
+                    v-bind:class="{ editing: transaction.id == sharedState.transactionEdit.editId, not_editing: transaction.id != sharedState.transactionEdit.editId }"
+                    v-bind:key="transaction.id"
+                    v-bind:transaction="transaction"
+                    />
+            </template>
+            <template v-else>
+                <tr>
+                    <td colspan="6">
+                        <h2>No transactions to display</h2>
+                    </td>
+                </tr>
+            </template>
+        </table>
     </div>
 </template>
 
@@ -52,3 +59,74 @@ export default {
     },
 }
 </script>
+
+<style>
+    .not_editing:nth-child(even) {
+        background-color: rgba(211, 211, 211, 0.5);
+    }
+    .editing {
+        background-color: rgba(255, 94, 94, 0.5);
+        transition-property: all;
+        transition-duration: 500ms;
+    }
+    .not_editing {
+        background-color: inherit;
+        transition-delay: 250ms;
+        transition-duration: 400ms;
+    }
+    table {
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 10px 10px 0 0;
+    }
+    .row-header {
+        color: white;
+        background-color: rgb(71, 49, 49);
+        height: 3em;
+    }
+    .col {
+        padding: 0.5em;
+    }
+    .col-1 {
+        padding-left: 1em;
+        width: 7em;
+    }
+    .col-2 {
+        width: 5em;
+    }
+    .col-3 {
+        width: 12em;
+    }
+    .col-3-5 {
+        padding: 0;
+    }
+    .col-4 {
+        width: 4em;
+    }
+    td.col-4 {
+        text-align: right;
+    }
+    .col-5 {
+        width: 3em;
+        text-align: center;
+    }
+    .col-6 {
+        width: 3em;
+        text-align: center;
+        padding-right: 1em;
+    }
+@media screen and (max-width:992px) {
+    table {
+        display:block
+    }
+    table>*,
+    table tr,
+    table td,
+    table th {
+        display:block
+    }
+    table thead {
+        display:none
+    }
+}
+</style>

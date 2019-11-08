@@ -75,6 +75,7 @@ export default {
             if (this.sharedState.transactionEdit.editMode) {
                 transaction.id = this.sharedState.transactionEdit.editId;
                 store.editTransaction(transaction);
+                this.$emit('close');
             } else {
                 store.addTransaction(transaction);
             }

@@ -112,39 +112,9 @@ export default {
     }
     .form_els {
         margin: 0.5em 0;
-    }
-    .transaction_account {
-        display: inline-block;
-        width: 11em; 
-    }
-    .transaction_date {
-        display: inline-block;
-        width: 6em;
-    }
-    .transaction_desc {
-        display: inline-block;
-        width: 22em;
-    }
-    .transaction_debit {
-        display: inline-block;
-        width: 4em;
-    }
-    .not_editing:nth-child(even) {
-        background-color: rgba(211, 211, 211, 0.5);
-    }
-    .editing {
-        background-color: rgba(255, 94, 94, 0.5);
-        transition-property: all;
-        transition-duration: 500ms;
-    }
-    .not_editing {
-        background-color: inherit;
-        transition-delay: 250ms;
-        transition-duration: 400ms;
-    }
+    }    
     .icon {
-        width: 1em;
-        padding: 0 0.5em;
+        width: 1.25em;
     }
     .btn {
         background-color: lightgray;
