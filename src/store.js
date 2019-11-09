@@ -105,7 +105,7 @@ export const store = {
     },
     async addBank(bank) {
         // add bank via API and push to global state
-        const url = 'http://127.0.0.1:8080/api/v0.1/accounts/';
+        const url = 'http://127.0.0.1:8080/api/v0.1/accounts';
         const response = await fetch(url, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -122,7 +122,7 @@ export const store = {
         // edit bank via API and edited bank to global state
         const url = 'http://127.0.0.1:8080/api/v0.1/accounts/' + bank.id;
         const response = await fetch(url, {
-            method: 'POST',
+            method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(bank)
         });
