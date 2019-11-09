@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+        <div id="toast-message" v-show="sharedState.toastMessage">{{ sharedState.toastMessage }}</div>
         <button type="button" class="btn" @click="showTransModal">Add New Transaction</button>
         <button type="button" class="btn" @click="showImportModal">Import Transactions</button>
         <button type="button" class="btn" @click="showAccountModal">Account Settings</button>
@@ -95,6 +96,9 @@ export default {
             this.isModalVisible = true;
         },
         closeModal: function() {
+            if (this.modalType == 'transaction' && this.inEditMode) {
+                store.exitEditMode();
+            }
             this.isModalVisible = false;
             this.modalType = '';
         },
@@ -105,10 +109,19 @@ export default {
 </script>
 
 <style>
-    .transaction_form_label {
-        display:inline-block;
-        width: 7em;
-        margin-left: 1em;
+    #app {
+        width: 70%;
+        margin: 0 auto;
+        padding: 0 2em;
+        background-color: #fdfdfd;
+    }
+    #toast-message {
+        width: 70%;
+        margin: 1em;
+        padding: 1em;
+        border: 1px solid rgba(255, 94, 94, 0.5);
+        background-color:rgba(216, 130, 130, 0.5);
+        border-radius: 5px;
     }
     .form_els {
         margin: 0.5em 0;
