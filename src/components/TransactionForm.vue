@@ -26,8 +26,8 @@
             </select>
         </p>
         <p class="form_els">
-            <label class="transaction_form_label" for="debit">Debit:</label>
-            <input v-model.number="debit" id="debit" placeholder="debit">
+            <label class="transaction_form_label" for="amount">Amount:</label>
+            <input v-model.number="amount" id="amount" placeholder="amount">
         </p>
         <p class="form_els">
             <input class="btn" :disabled="sharedState.transactionEdit.editMode" type="submit" value="Submit">
@@ -48,7 +48,7 @@ export default {
             
             description: '',
             date: '',
-            debit: null,
+            amount: null,
             bank_select: null,
             category_select: null,
             categories: [{text: 'dick butts', value: 1},            
@@ -61,7 +61,7 @@ export default {
             this.description = this.sharedState.transactionEdit.transaction.description;
             this.bank_select = this.sharedState.transactionEdit.transaction.account;
             this.date = this.sharedState.transactionEdit.transaction.date.slice(0, 10);
-            this.debit = this.sharedState.transactionEdit.transaction.debit;
+            this.amount = this.sharedState.transactionEdit.transaction.amount;
         }
     },
     methods: {
@@ -69,7 +69,7 @@ export default {
             let transaction = {
                 'description': this.description,
                 'date': this.date,
-                'debit': this.debit,
+                'amount': this.amount,
                 'account': this.bank_select,
             }
             if (this.sharedState.transactionEdit.editMode) {
@@ -85,7 +85,7 @@ export default {
             this.description = dict[Math.floor(Math.random()*dict.length)] + ' ' + dict[Math.floor(Math.random()*dict.length)];
             let d = new Date(Math.random()*3000000000000);
             this.date = d.toISOString().slice(0, 10);
-            this.debit = Math.floor(Math.random()*1000);
+            this.amount = Math.floor(Math.random()*-1000);
             this.bank_select = this.banks[Math.floor(Math.random()*this.banks.length)].value;
             this.category_select = 1;
         }

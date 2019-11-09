@@ -7,7 +7,7 @@
                 <th class="col col-2">Date</th>
                 <th class="col col-3">Description</th>
                 <th class="col col-3-5"> </th>
-                <th class="col col-4">Debit</th>
+                <th class="col col-4">Amount</th>
                 <th class="col col-5">Edit</th>
                 <th class="col col-6">Delete</th>
             </tr>
@@ -115,6 +115,7 @@ export default {
         text-align: center;
         padding-right: 1em;
     }
+
 @media screen and (max-width:992px) {
     table {
         display:block
