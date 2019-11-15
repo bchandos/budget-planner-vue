@@ -8,8 +8,26 @@ export const store = {
             transaction: null,
         },
         toastMessage: '',
+        APIKey: '',
     },
-    
+    async getApiKey() {
+        const response = await fetch('http://127.0.0.1:8080/api/v0.1/authentication', {
+            // credentials: 'include',
+            // need to figure out how to set cookies here, this should allow them
+            // but it causes a big hangup and also doesn't actually set the cookies.
+            // then how do we send the cookie with all subsequent requests...
+            method: 'GET',
+            headers: {
+                'Authorization': 'Basic dGVzdHVzZXI6dGVzdHBhc3N3b3Jk'
+            },
+        });
+        const json_response = await response.json();
+        if (json_response.status == 'success') {
+            this.state.APIKey = json_response.payload;
+        } else {
+            this.setToastMessage('Failed to retrieve API Key.');
+        }
+    },
     async loadTransactions() {
         // load all transactions from the API and update global state
         const response_trans = await fetch('http://127.0.0.1:8080/api/v0.1/transactions');
@@ -38,6 +56,7 @@ export const store = {
         // add transaction via API and push to global state
         const url = 'http://127.0.0.1:8080/api/v0.1/transaction';
         const response = await fetch(url, {
+            // credentials: 'include',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -55,6 +74,7 @@ export const store = {
         // send edited transaction to API and then update global state
         const url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + transaction.id;
         const response = await fetch(url, {
+            // credentials: 'include',
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(transaction)
@@ -75,14 +95,16 @@ export const store = {
         form_data.append('file_upload', file_obj);
         form_data.append('bank_id', account_id);
         const response = await fetch(url, {
+            // credentials: 'include',
             method: 'POST', 
             body: form_data 
             });
         const json_response = await response.json();
         if (json_response.status == 'success') {
-            this.state.transactions.push(json_response.payload);
+            this.state.transactions.push(json_response.payload.new_transactions);
             // flatten the array as the payload was an array
             this.state.transactions = this.state.transactions.flat(Infinity);
+            this.setToastMessage(`${json_response.payload.total} transactions processed: ${json_response.payload.added} transactions added; ${json_response.payload.skipped} transactions skipped.`);
         } else {
             this.setToastMessage('Failed to import transactions: ' + json_response.payload.error_message);
         }
@@ -91,10 +113,8 @@ export const store = {
         // delete transaction via API and remove from global state
         const url = 'http://127.0.0.1:8080/api/v0.1/transaction/' + transaction_id;
         const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            // credentials: 'include',
+            method: 'DELETE'
         });
         const json_response = await response.json();
         if (json_response.status == 'success') {
@@ -107,6 +127,7 @@ export const store = {
         // add bank via API and push to global state
         const url = 'http://127.0.0.1:8080/api/v0.1/accounts';
         const response = await fetch(url, {
+            // credentials: 'include',
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(bank)
@@ -122,6 +143,7 @@ export const store = {
         // edit bank via API and edited bank to global state
         const url = 'http://127.0.0.1:8080/api/v0.1/accounts/' + bank.id;
         const response = await fetch(url, {
+            // credentials: 'include',
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(bank)
@@ -138,6 +160,7 @@ export const store = {
         // delete bank via API and remove from global state
         const url = 'http://127.0.0.1:8080/api/v0.1/accounts/' + bank_id;
         const response = await fetch(url, {
+            // credentials: 'include',
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -151,10 +174,10 @@ export const store = {
         }
     },
     setToastMessage(message) {
-        this.toastMessage = message;
+        this.state.toastMessage = message;
     },
     clearToastMessage() {
-        this.toastMessage = '';
+        this.state.toastMessage = '';
     },
     enterEditMode(transaction) {
         this.state.transactionEdit.editMode = true;

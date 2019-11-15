@@ -1,8 +1,8 @@
 <template>
-    <form id="account_form" v-on:submit.prevent="postData" method="POST" v-bind:class="{ editing: newAccountMode }">
+    <form id="account-form" v-on:submit.prevent="postData" method="POST" v-bind:class="{ editing: newAccountMode }">
         <input class="btn" type="button" name="add-account" @click="newAccount" v-bind:value="accountButtonText">
         <p class="form_els">
-            <label class="transaction_form_label" for="bank_select">Bank:</label>
+            <label class="form-label" for="bank_select">Bank:</label>
             <select v-model="bank_select" id="bank_select" :disabled="newAccountMode">
                 <option v-for="bank_ in sharedState.banks" v-bind:key="bank_.id" v-bind:value="bank_.id">
                     {{ bank_.name }}
@@ -10,19 +10,19 @@
             </select>
         </p>
         <p class="form_els">
-            <label class="transaction_form_label" for="name">Name:</label>
+            <label class="form-label" for="name">Name:</label>
             <input name="name" v-model="bank.name">
         </p>
         <p class="form_els">
-            <label class="transaction_form_label" for="filename_re">Filename Regex:</label>
+            <label class="form-label" for="filename_re">Filename Regex:</label>
             <input name="filename_re" v-model="bank.filename_re">
         </p>
         <p class="form_els">
-            <label class="transaction_form_label" for="debit_positive">Debit is positive:</label>
+            <label class="form-label" for="debit_positive">Debit is positive:</label>
             <input type="checkbox" name="debit_positive" v-model="bank.debit_positive">
         </p>
         <p class="form_els">
-            <label class="transaction_form_label" for="date_format">Date Format:</label>
+            <label class="form-label" for="date_format">Date Format:</label>
             <input name="date_format" v-model="bank.date_format">
         </p>
         <p class="form_els">
@@ -97,3 +97,16 @@ export default {
     }
 }
 </script>
+
+<style>
+    #account-form {
+        padding: 1em;
+        margin: 1em;
+    }
+    .form-label {
+        padding-right: 1em;
+        display: inline-block;
+        width: 7em;
+        text-align: right;
+    }
+</style>

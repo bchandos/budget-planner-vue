@@ -1,13 +1,18 @@
 <template>
     <div id="app">
-        <div id="toast-message" v-show="sharedState.toastMessage">{{ sharedState.toastMessage }}</div>
+        <transition name="fade">
+            <div id="toast-message" v-show="sharedState.toastMessage">
+                {{ sharedState.toastMessage }}
+                <button class="clear-toast-btn" @click="clearToast">X</button>
+            </div>
+        </transition>
         <button type="button" class="btn" @click="showTransModal">Add New Transaction</button>
         <button type="button" class="btn" @click="showImportModal">Import Transactions</button>
         <button type="button" class="btn" @click="showAccountModal">Account Settings</button>
         
         <modal v-if="modalType == 'transaction'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
-                <p></p>
+                <div></div>
             </template>
             <template v-slot:body>        
                 <TransactionForm 
@@ -18,11 +23,10 @@
 
         <modal v-else-if="modalType == 'import'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
-                <p></p>
+                <div></div>
             </template>
             <template v-slot:body>        
                 <ImportForm
-                    @transactionCreated="transactionCreated"
                     @close="closeModal"
                 />
             </template>
@@ -30,7 +34,7 @@
 
         <modal v-else-if="modalType == 'account'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
-                <p></p>
+                <div></div>
             </template>
             <template v-slot:body>        
                 <AccountForm />
@@ -67,8 +71,11 @@ export default {
     },
 
     created: function() {
+            store.getApiKey();
             store.loadTransactions();
             store.loadBanks();
+            // debug
+            store.setToastMessage('Test message');
     },
     computed: {
         inEditMode: function() {
@@ -102,6 +109,9 @@ export default {
             this.isModalVisible = false;
             this.modalType = '';
         },
+        clearToast: function() {
+            store.clearToastMessage();
+        }
         
     },
 
@@ -159,5 +169,17 @@ export default {
     #transaction_form.editing {
         border: 1px solid green;
         background-color: rgba(255, 94, 94, 0.5);
+    }
+    .clear-toast-btn {
+        border: none;
+        background: none;
+        float: right;
+        font-size: 1.2em;
+    }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 </style>

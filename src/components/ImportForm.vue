@@ -32,6 +32,12 @@ export default {
     methods: {
         processFile: function () {
             this.file = this.$refs.fileUpload.files[0];
+            this.sharedState.banks.forEach(e => {
+                let re = new RegExp(e.filename_re);
+                if (re.test(this.file.name)) {
+                    this.bank_select = e.id;
+                }
+            });
         },
         postData: function() {
             store.importTransactions(this.file, this.bank_select);
