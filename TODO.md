@@ -14,5 +14,7 @@
 - Transaction list
     - ~~Respect banks debit_positive field (API side)~~
     - ~~Format amounts with correct digits (client side)~~
+- Authentication implementation
+    - There is some issues with Fetch and Firefox where sending "credentials: include" causes a 5 second delay on any non-GET request.
 
 
