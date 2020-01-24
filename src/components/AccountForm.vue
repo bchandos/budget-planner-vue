@@ -1,35 +1,57 @@
 <template>
-    <form id="account-form" v-on:submit.prevent="postData" method="POST" v-bind:class="{ editing: newAccountMode }">
-        <input class="btn" type="button" name="add-account" @click="newAccount" v-bind:value="accountButtonText">
-        <p class="form_els">
-            <label class="form-label" for="bank_select">Bank:</label>
-            <select v-model="bank_select" id="bank_select" :disabled="newAccountMode">
-                <option v-for="bank_ in sharedState.banks" v-bind:key="bank_.id" v-bind:value="bank_.id">
-                    {{ bank_.name }}
-                </option>
-            </select>
-        </p>
-        <p class="form_els">
-            <label class="form-label" for="name">Name:</label>
-            <input name="name" v-model="bank.name">
-        </p>
-        <p class="form_els">
-            <label class="form-label" for="filename_re">Filename Regex:</label>
-            <input name="filename_re" v-model="bank.filename_re">
-        </p>
-        <p class="form_els">
-            <label class="form-label" for="debit_positive">Debit is positive:</label>
-            <input type="checkbox" name="debit_positive" v-model="bank.debit_positive">
-        </p>
-        <p class="form_els">
-            <label class="form-label" for="date_format">Date Format:</label>
-            <input name="date_format" v-model="bank.date_format">
-        </p>
-        <p class="form_els">
-            <input :disabled="!bank_select && !newAccountMode" type="submit" value="Save" class="btn">
-            <input :disabled="!bank_select" type="button" value="Delete" class="btn" @click="deleteAccount">
-        </p>
-    </form>
+        <form id="account-form" v-on:submit.prevent="postData" method="POST" v-bind:class="{ editing: newAccountMode }">
+                <input class="btn" type="button" name="add-account" @click="newAccount" v-bind:value="accountButtonText">
+                <p class="form_els">
+                    <label class="form-label" for="bank_select">Bank:</label>
+                    <select v-model="bank_select" id="bank_select" :disabled="newAccountMode">
+                        <option v-for="bank_ in sharedState.banks" v-bind:key="bank_.id" v-bind:value="bank_.id">
+                            {{ bank_.name }}
+                        </option>
+                    </select>
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="name">Name:</label>
+                    <input name="name" v-model="bank.name">
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="filename_re">Filename Regex:</label>
+                    <input name="filename_re" v-model="bank.filename_re">
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="debit_positive">Debit is positive:</label>
+                    <input type="checkbox" name="debit_positive" v-model="bank.debit_positive">
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="date_format">Date Format:</label>
+                    <input name="date_format" v-model="bank.date_format">
+                </p>
+            <h3>Field Mappings</h3>
+            
+                <p class="form_els">
+                    <label class="form-label" for="credit">credit:</label>
+                    <input name="credit" v-model="bank.credit_map">
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="debit">debit:</label>
+                    <input name="debit" v-model="bank.debit_map">
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="description">description:</label>
+                    <input name="description" v-model="bank.description_map">
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="date">date:</label>
+                    <input name="date" v-model="bank.date_map">
+                </p>
+                <p class="form_els">
+                    <label class="form-label" for="category">category:</label>
+                    <input name="category" v-model="bank.category_map">
+                </p>
+            <p class="form_els">
+                <input :disabled="!bank_select && !newAccountMode" type="submit" value="Save" class="btn">
+                <input :disabled="!bank_select" type="button" value="Delete" class="btn" @click="deleteAccount">
+            </p>
+        </form>
 </template>
 <script>
 

@@ -10,7 +10,8 @@
     - ~~create message div~~
     - animate and dismiss messages
 - Transaction Import
-    - Filter banks by filename regex
+    - ~~Filter banks by filename regex~~
+    - ~~Just auto-select the bank...~~
 - Transaction list
     - ~~Respect banks debit_positive field (API side)~~
     - ~~Format amounts with correct digits (client side)~~
