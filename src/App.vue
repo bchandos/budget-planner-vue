@@ -74,6 +74,7 @@ export default {
             store.getApiKey();
             store.loadTransactions();
             store.loadBanks();
+            store.loadCategories();
             // debug
             store.setToastMessage('Test message');
     },
@@ -133,7 +134,7 @@ export default {
         background-color:rgba(216, 130, 130, 0.5);
         border-radius: 5px;
     }
-    .form_els {
+    .form-els {
         margin: 0.5em 0;
     }    
     .icon {
@@ -156,6 +157,16 @@ export default {
     .btn:hover:not([disabled]) {
         border: 1px solid gray;
         transition-duration: 400ms;
+    }
+
+    .small-btn {
+        font-size: 0.7em;
+        padding: 1px;
+        margin: 1px;
+    }
+
+    .hidden {
+        display: none;
     }
 
     #transaction_form {

@@ -1,10 +1,10 @@
 <template>
     <form id="import_form" v-on:submit.prevent="postData" method="POST">
-        <p class="form_els">
+        <p class="form-els">
             <label for="file_upload">Select File:</label>
             <input type="file" ref="fileUpload" @change="processFile">
         </p>
-        <p class="form_els">
+        <p class="form-els">
             <label class="transaction_form_label" for="bank_select">Bank:</label>
             <select v-model="bank_select" id="bank_select">
                 <option v-for="bank in sharedState.banks" v-bind:key="bank.id" v-bind:value="bank.id">
@@ -12,7 +12,7 @@
                 </option>
             </select>
         </p>
-        <p class="form_els" style="text-align: center;">
+        <p class="form-els" style="text-align: center;">
             <input type="submit" value="Import" class="btn">
         </p>
     </form>

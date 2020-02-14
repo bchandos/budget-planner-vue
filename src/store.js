@@ -7,6 +7,7 @@ export const store = {
             editId: -1,
             transaction: null,
         },
+        categories: [],
         toastMessage: '',
         APIKey: '',
     },
@@ -49,6 +50,18 @@ export const store = {
             this.state.banks = json_accounts.payload;
         } else {
             this.setToastMessage('Failed to retrieve banks: ' + json_accounts.payload.error_message);
+            // should we clear banks?
+        }
+    },
+    async loadCategories() {
+        // load all categories from the API and update global state
+        const response_accounts = await fetch('http://127.0.0.1:8080/api/v0.1/categories');
+        const json_categories = await response_accounts.json();
+        // handle server errors here?
+        if (json_categories.status == 'success') {
+            this.state.categories = json_categories.payload;
+        } else {
+            this.setToastMessage('Failed to retrieve banks: ' + json_categories.payload.error_message);
             // should we clear banks?
         }
     },
@@ -171,6 +184,23 @@ export const store = {
             this.state.banks = this.state.banks.filter(function(o) {return o.id != bank_id});
         } else {
             this.setToastMessage('Failed to delete account: ' + json_response.payload.error_message);
+        }
+    },
+    async addCategory(category) {
+        // add category via API and push to global state
+        const url = 'http://127.0.0.1:8080/api/v0.1/categories';
+        const response = await fetch(url, {
+            // credentials: 'include',
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(category)
+        });
+        const json_response = await response.json()
+        if (json_response.status=='success') {
+            this.state.categories.push(json_response.payload);
+            this.setToastMessage('Added category "' + category.name +'".');
+        } else {
+            this.setToastMessage('Failed to add new category: ' + json_response.payload.error_message);
         }
     },
     setToastMessage(message) {
