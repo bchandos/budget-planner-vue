@@ -31,13 +31,40 @@ export const store = {
     },
     async loadTransactions() {
         // load all transactions from the API and update global state
-        const response_trans = await fetch('http://127.0.0.1:8080/api/v0.1/transactions');
+        const url = 'http://127.0.0.1:8080/api/v0.1/transactions';
+        const response_trans = await fetch(url);
         const json_trans = await response_trans.json();
         // handle server errors here?
         if (json_trans.status == 'success') {
             this.state.transactions = json_trans.payload;
         } else {
             this.setToastMessage('Failed to retrieve transactions: ' + json_trans.payload.error_message);
+            // should we clear transactions?
+        }
+    },
+    async loadAccountTransactions(account_id) {
+        // load all of an account's transactions from the API and update global state
+        const url = `http://127.0.0.1:8080/api/v0.1/transactions/account/${parseInt(account_id)}`;
+        const response_trans = await fetch(url);
+        const json_trans = await response_trans.json();
+        // handle server errors here?
+        if (json_trans.status == 'success') {
+            this.state.transactions = json_trans.payload;
+        } else {
+            this.setToastMessage('Failed to retrieve account transactions: ' + json_trans.payload.error_message);
+            // should we clear transactions?
+        }
+    },
+    async loadCategoryTransactions(category_id) {
+        // load all of a category's transactions from the API and update global state
+        const url = `http://127.0.0.1:8080/api/v0.1/transactions/category/${parseInt(category_id)}`;
+        const response_trans = await fetch(url);
+        const json_trans = await response_trans.json();
+        // handle server errors here?
+        if (json_trans.status == 'success') {
+            this.state.transactions = json_trans.payload;
+        } else {
+            this.setToastMessage('Failed to retrieve category transactions: ' + json_trans.payload.error_message);
             // should we clear transactions?
         }
     },

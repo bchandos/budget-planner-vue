@@ -1,6 +1,24 @@
 <template>
     <div>
         <h2>Transactions</h2>
+        <h3 class="filter-menu">
+            <img class="icon" src="icons/filter-icon.svg" />
+            <li class="filter-label" @click="openFilters('account')">Account</li>
+            <li class="filter-label" @click="openFilters('category')">Category</li>
+            <transition name="simple-fade">
+                <li v-if="filtersSet" @click="clearFilters" class="filter-label filter-clear">Clear All</li>
+            </transition>
+        </h3>
+        <div v-if="filtered" class="filter-menu">
+            <li 
+                v-for="option in filterOptions" 
+                v-bind:key="option.id" 
+                v-bind:class="{ 'filter-clicked': filterActive(option.id) }"
+                @click="toggleActiveFilter(option.id)"
+                class="filter-item">
+                    {{ option.name }}
+            </li>
+        </div>
         <table>
             <tr class="row-header">
                 <th class="col col-1">Account</th>
@@ -42,6 +60,13 @@ export default {
     data() {
         return {
             sharedState: store.state,
+            filtered: false,
+            filterOptions: [],
+            currentFilterGroup: '',
+            activeFilters: {
+                'account': [],
+                'category': [],
+            },
         }
     },
     methods: {
@@ -51,12 +76,45 @@ export default {
         sendToEdit: function(t) {
             store.enterEditMode(t);
         },
+        openFilters: function(filter_type) {
+            this.filtered = true;
+            this.currentFilterGroup = filter_type;
+            if (filter_type=='account') {
+                this.filterOptions = this.sharedState.banks;
+            } else if (filter_type=='category') {
+                this.filterOptions = this.sharedState.categories;
+            }
+        },
+        filterActive: function(id) {
+            if (this.filtered && this.currentFilterGroup) {
+                return this.activeFilters[this.currentFilterGroup].includes(id);
+            }
+        },
+        toggleActiveFilter: function(id) {
+            if (this.filtered && this.currentFilterGroup) {
+                if (this.activeFilters[this.currentFilterGroup].includes(id)) {
+                    const index = this.activeFilters[this.currentFilterGroup].indexOf(id);
+                    this.activeFilters[this.currentFilterGroup].splice(index, 1);
+                } else {
+                    this.activeFilters[this.currentFilterGroup].push(id)
+                }
+            }
+        },
+        clearFilters: function() {
+            this.filtered = false;
+            this.filterOptions = [];
+            this.currentFilterGroup = '';
+            this.activeFilters = {'account': [], 'category': []};
+        }
     },
     computed: {
         sortedTransactions: function() {
             const transactions_copy = [...this.sharedState.transactions];
             return transactions_copy.sort(function(a, b) {return a.date > b.date});
         },
+        filtersSet: function() {
+            return this.filtered && (this.activeFilters['account'].length || this.activeFilters['category'].length);
+        }
     },
 }
 </script>
@@ -98,8 +156,8 @@ export default {
     .col-3 {
         width: 12em;
     }
-    col-4 {
-        width: 12em;
+    .col-4 {
+        width: 10em;
     }
     .col-4-5 {
         padding: 0;
@@ -118,6 +176,39 @@ export default {
         width: 3em;
         text-align: center;
         padding-right: 1em;
+    }
+    .filter-menu {
+        display: flex;
+        list-style: none;
+    }
+    .filter-label {
+        position: relative;
+        margin-left: 2em;
+        text-transform: capitalize;
+        cursor: pointer;
+    }
+    .filter-item {
+        position: relative;
+        margin-left: 1em;
+        margin-bottom: 1em;
+        padding: 0.25em;
+        cursor: pointer;
+        border-width: 1px;
+        border-color:rgba(133, 128, 128, 0.5);
+        border-style: dotted;
+        border-radius: 3px;
+    }
+    .filter-clicked {
+        background-color:rgba(211, 211, 211, 0.5);
+    }
+    .filter-clear {
+        color: brown;
+    }
+    .simple-fade-enter-active, .simple-fade-leave-active {
+        transition: opacity 300ms;
+    }
+    .simple-fade-enter, .simple-fade-leave-to {
+        opacity: 0;
     }
 
 @media screen and (max-width:992px) {

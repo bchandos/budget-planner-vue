@@ -55,6 +55,12 @@ export default {
         },
         deleteTrans() {
             store.deleteTransaction(this.transaction.id);
+        },
+        loadAccountTransactions() {
+            store.loadAccountTransactions(this.transaction.account);
+        },
+        loadCategoryTransactions() {
+            store.loadCategoryTransactions(this.transaction.category);
         }
     },
     computed: {
