@@ -2,14 +2,22 @@
     <div>
         <h2>Transactions</h2>
         <h3 class="filter-menu">
-            <img class="icon" src="icons/filter-icon.svg" />
-            <li class="filter-label" @click="openFilters('account')">Account</li>
-            <li class="filter-label" @click="openFilters('category')">Category</li>
+            <img class="image-icon" src="icons/filter-icon.svg" />
+            <li class="filter-label" @click="openFilters('account')">
+                Account
+                <img v-if="currentFilterGroup == 'account' && showFilters" class="image-icon" src="icons/up-icon.svg" />
+            </li>
+            <li class="filter-label" @click="openFilters('category')">
+                Category
+                <img v-if="currentFilterGroup == 'category' && showFilters" class="image-icon" src="icons/up-icon.svg" />
+            </li>
             <transition name="simple-fade">
-                <li v-if="filtersSet" @click="clearFilters" class="filter-label filter-clear">Clear All</li>
+                <li v-if="filtersSet" @click="clearFilters" class="filter-label filter-clear">
+                    Clear All
+                </li>
             </transition>
         </h3>
-        <div v-show="filtered" class="filter-menu" v-bind:key="currentFilterGroup">
+        <div v-show="showFilters" class="filter-menu" v-bind:key="currentFilterGroup">
             <li 
                 v-for="option in filterOptions" 
                 v-bind:key="option.id" 
@@ -60,13 +68,11 @@ export default {
     data() {
         return {
             sharedState: store.state,
-            filtered: false,
+            showFilters: false,
             filterOptions: [],
             currentFilterGroup: '',
-            activeFilters: {
-                'account': [],
-                'category': [],
-            },
+            activeAccountFilters: [],
+            activeCategoryFilters: [],
         }
     },
     methods: {
@@ -77,7 +83,7 @@ export default {
             store.enterEditMode(t);
         },
         openFilters: function(filter_type) {
-            this.filtered = true;
+            this.showFilters = !(this.currentFilterGroup == filter_type && this.showFilters);
             this.currentFilterGroup = filter_type;
             if (filter_type=='account') {
                 this.filterOptions = this.sharedState.banks;
@@ -86,34 +92,67 @@ export default {
             }
         },
         filterActive: function(id) {
-            if (this.filtered && this.currentFilterGroup) {
-                return this.activeFilters[this.currentFilterGroup].includes(id);
+            if (this.currentFilterGroup) {
+                if (this.currentFilterGroup=='account') {
+                    return this.activeAccountFilters.includes(id);
+                } else if (this.currentFilterGroup=='category') {
+                    return this.activeCategoryFilters.includes(id);
+                }
             }
         },
         toggleActiveFilter: function(id) {
-            if (this.filtered && this.currentFilterGroup) {
-                if (this.activeFilters[this.currentFilterGroup].includes(id)) {
-                    const index = this.activeFilters[this.currentFilterGroup].indexOf(id);
-                    this.activeFilters[this.currentFilterGroup].splice(index, 1);
-                } else {
-                    this.activeFilters[this.currentFilterGroup].push(id)
+            if (this.currentFilterGroup) {
+                if (this.currentFilterGroup=='account') {
+                    if (this.activeAccountFilters.includes(id)) {
+                        const index = this.activeAccountFilters.indexOf(id);
+                        this.activeAccountFilters.splice(index, 1);
+                    } else {
+                        this.activeAccountFilters.push(id)
+                    }
+                } else if (this.currentFilterGroup=='category') {
+                    if (this.activeCategoryFilters.includes(id)) {
+                        const index = this.activeCategoryFilters.indexOf(id);
+                        this.activeCategoryFilters.splice(index, 1);
+                    } else {
+                        this.activeCategoryFilters.push(id)
+                    }
                 }
             }
         },
         clearFilters: function() {
-            this.filtered = false;
+            this.showFilters = false;
             this.filterOptions = [];
             this.currentFilterGroup = '';
-            this.activeFilters = {'account': [], 'category': []};
+            this.activeAccountFilters = [];
+            this.activeCategoryFilters = [];
         }
     },
     computed: {
         sortedTransactions: function() {
             const transactions_copy = [...this.sharedState.transactions];
-            return transactions_copy.sort(function(a, b) {return a.date > b.date});
+            transactions_copy.sort(function(a, b) {return a.date > b.date});
+            if (this.filtersSet) {
+                if (this.activeAccountFilters.length && this.activeCategoryFilters.length) {
+                    return transactions_copy.filter((t) => {
+                        return (
+                            this.activeAccountFilters.includes(t.account) &&
+                            this.activeCategoryFilters.includes(t.category)
+                        )
+                    });
+                } else {
+                    return transactions_copy.filter((t) => {
+                        return (
+                            this.activeAccountFilters.includes(t.account) ||
+                            this.activeCategoryFilters.includes(t.category)
+                        )
+                    });
+                }
+            } else {
+                return transactions_copy;
+            }
         },
         filtersSet: function() {
-            return this.filtered && (this.activeFilters['account'].length || this.activeFilters['category'].length);
+            return this.currentFilterGroup && (this.activeAccountFilters.length || this.activeCategoryFilters.length);
         }
     },
 }

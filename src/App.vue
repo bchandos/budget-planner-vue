@@ -140,6 +140,9 @@ export default {
     .icon {
         width: 1.25em;
     }
+    .image-icon {
+        width: 0.75em;
+    }
     .btn {
         background-color: lightgray;
         border: 1px solid lightgray;
