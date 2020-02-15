@@ -9,7 +9,7 @@
                 <li v-if="filtersSet" @click="clearFilters" class="filter-label filter-clear">Clear All</li>
             </transition>
         </h3>
-        <div v-if="filtered" class="filter-menu">
+        <div v-show="filtered" class="filter-menu" v-bind:key="currentFilterGroup">
             <li 
                 v-for="option in filterOptions" 
                 v-bind:key="option.id" 
@@ -204,12 +204,14 @@ export default {
     .filter-clear {
         color: brown;
     }
+    /* Transitions */
     .simple-fade-enter-active, .simple-fade-leave-active {
         transition: opacity 300ms;
     }
     .simple-fade-enter, .simple-fade-leave-to {
         opacity: 0;
     }
+
 
 @media screen and (max-width:992px) {
     table {
