@@ -6,10 +6,11 @@
                 <th class="col col-1">Account</th>
                 <th class="col col-2">Date</th>
                 <th class="col col-3">Description</th>
-                <th class="col col-3-5"> </th>
-                <th class="col col-4">Amount</th>
-                <th class="col col-5">Edit</th>
-                <th class="col col-6">Delete</th>
+                <th class="col col-4">Category</th>
+                <th class="col col-4-5"> </th>
+                <th class="col col-5">Amount</th>
+                <th class="col col-6">Edit</th>
+                <th class="col col-7">Delete</th>
             </tr>
             <template v-if="sharedState.transactions.length">
                 <TransactionItem 
@@ -97,20 +98,23 @@ export default {
     .col-3 {
         width: 12em;
     }
-    .col-3-5 {
+    col-4 {
+        width: 12em;
+    }
+    .col-4-5 {
         padding: 0;
     }
-    .col-4 {
+    .col-5 {
         width: 4em;
     }
-    td.col-4 {
+    td.col-5 {
         text-align: right;
     }
-    .col-5 {
+    .col-6 {
         width: 3em;
         text-align: center;
     }
-    .col-6 {
+    .col-7 {
         width: 3em;
         text-align: center;
         padding-right: 1em;
