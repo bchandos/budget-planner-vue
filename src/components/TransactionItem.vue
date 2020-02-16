@@ -6,7 +6,6 @@
         <td v-if="transaction.category" class="col col-4">{{ categoryName(transaction.category) }}</td>
         <td v-else class="col col-4">
             <select v-model="category_select" id="category_select" v-on:change="storeTransaction">
-                <option value=""> </option>
                 <option 
                 v-for="category in sharedState.categories" 
                 v-bind:key="category.id" 
