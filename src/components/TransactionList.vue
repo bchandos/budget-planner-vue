@@ -31,12 +31,27 @@
         </div>
         <table>
             <tr class="row-header">
-                <th class="col col-1 col-sort" @click="setSort('account')">Account</th>
-                <th class="col col-2 col-sort" @click="setSort('date')">Date</th>
-                <th class="col col-3 col-sort" @click="setSort('description')">Description</th>
-                <th class="col col-4 col-sort" @click="setSort('category')">Category</th>
+                <th class="col col-1 col-sort" 
+                    @click="setSort('account')"
+                    v-bind:class="{ 'col-sort-active-asc': sortProperty=='account' && sortOrderAsc, 'col-sort-active-desc': sortProperty=='account' && !sortOrderAsc }"
+                >Account </th>
+                <th class="col col-2 col-sort" 
+                    @click="setSort('date')"
+                    v-bind:class="{ 'col-sort-active-asc': sortProperty=='date' && sortOrderAsc, 'col-sort-active-desc': sortProperty=='date' && !sortOrderAsc }"
+                >Date </th>
+                <th class="col col-3 col-sort" 
+                    @click="setSort('description')"
+                    v-bind:class="{ 'col-sort-active-asc': sortProperty=='description' && sortOrderAsc, 'col-sort-active-desc': sortProperty=='description' && !sortOrderAsc }"
+                >Description </th>
+                <th class="col col-4 col-sort" 
+                    @click="setSort('category')"
+                    v-bind:class="{ 'col-sort-active-asc': sortProperty=='category' && sortOrderAsc, 'col-sort-active-desc': sortProperty=='category' && !sortOrderAsc }"
+                    >Category </th>
                 <th class="col col-4-5"> </th>
-                <th class="col col-5 col-sort" @click="setSort('amount')">Amount</th>
+                <th class="col col-5 col-sort" 
+                    @click="setSort('amount')"
+                    v-bind:class="{ 'col-sort-active-asc': sortProperty=='amount' && sortOrderAsc, 'col-sort-active-desc': sortProperty=='amount' && !sortOrderAsc }"
+                    >Amount </th>
                 <th class="col col-6">Edit</th>
                 <th class="col col-7">Delete</th>
             </tr>
@@ -87,6 +102,8 @@ export default {
             store.enterEditMode(t);
         },
         openFilters: function(filter_type) {
+            // open the filter section if not open
+            // close if selecting the same filter group
             this.showFilters = !(this.currentFilterGroup == filter_type && this.showFilters);
             this.currentFilterGroup = filter_type;
             if (filter_type=='account') {
@@ -96,6 +113,7 @@ export default {
             }
         },
         filterActive: function(id) {
+            // is this item a current filter item?
             if (this.currentFilterGroup) {
                 if (this.currentFilterGroup=='account') {
                     return this.activeAccountFilters.includes(id);
@@ -105,6 +123,7 @@ export default {
             }
         },
         toggleActiveFilter: function(id) {
+            // add or remove item from its respective filter group
             if (this.currentFilterGroup) {
                 if (this.currentFilterGroup=='account') {
                     if (this.activeAccountFilters.includes(id)) {
@@ -135,6 +154,7 @@ export default {
                 // if user clicked same property, reverse the sort order
                 this.sortOrderAsc = !this.sortOrderAsc;
             } else {
+                // otherwise set this as the sort property and default to Ascending
                 this.sortProperty = property;
                 this.sortOrderAsc = true;
             }
@@ -142,7 +162,9 @@ export default {
     },
     computed: {
         sortedTransactions: function() {
+            // return the transaction list with sorts and filters applied
             const transactions_copy = [...this.sharedState.transactions];
+            // sorts
             transactions_copy.sort((a, b) => {
                     let x = (this.sortOrderAsc ? 1 : -1);
                     if (a[this.sortProperty] > b[this.sortProperty]) {
@@ -152,8 +174,10 @@ export default {
                     }
                     return 0; 
                 });
+            // filters
             if (this.filtersSet) {
                 if (this.activeAccountFilters.length && this.activeCategoryFilters.length) {
+                    // if there are filters in both areas, apply them both
                     return transactions_copy.filter((t) => {
                         return (
                             this.activeAccountFilters.includes(t.account) &&
@@ -161,6 +185,7 @@ export default {
                         )
                     });
                 } else {
+                    // otherwise, apply only the relevant filter
                     return transactions_copy.filter((t) => {
                         return (
                             this.activeAccountFilters.includes(t.account) ||
@@ -169,10 +194,12 @@ export default {
                     });
                 }
             } else {
+                // if there are no filters, just return the sorted array
                 return transactions_copy;
             }
         },
         filtersSet: function() {
+            // are filters set?
             return this.currentFilterGroup && (this.activeAccountFilters.length || this.activeCategoryFilters.length);
         }
     },
@@ -208,6 +235,12 @@ export default {
     }
     .col-sort {
         cursor: pointer;
+    }
+    .col-sort-active-asc::after {
+        content: '\2193';
+    }
+    .col-sort-active-desc::after {
+        content: '\2191';
     }
     .col-1 {
         padding-left: 1em;
