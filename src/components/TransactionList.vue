@@ -31,12 +31,12 @@
         </div>
         <table>
             <tr class="row-header">
-                <th class="col col-1">Account</th>
-                <th class="col col-2">Date</th>
-                <th class="col col-3">Description</th>
-                <th class="col col-4">Category</th>
+                <th class="col col-1 col-sort" @click="setSort('account')">Account</th>
+                <th class="col col-2 col-sort" @click="setSort('date')">Date</th>
+                <th class="col col-3 col-sort" @click="setSort('description')">Description</th>
+                <th class="col col-4 col-sort" @click="setSort('category')">Category</th>
                 <th class="col col-4-5"> </th>
-                <th class="col col-5">Amount</th>
+                <th class="col col-5 col-sort" @click="setSort('amount')">Amount</th>
                 <th class="col col-6">Edit</th>
                 <th class="col col-7">Delete</th>
             </tr>
@@ -72,6 +72,8 @@ export default {
             sharedState: store.state,
             showFilters: false,
             filterOptions: [],
+            sortProperty: 'date',
+            sortOrderAsc: true,
             currentFilterGroup: '',
             activeAccountFilters: [],
             activeCategoryFilters: [],
@@ -127,23 +129,28 @@ export default {
             this.currentFilterGroup = '';
             this.activeAccountFilters = [];
             this.activeCategoryFilters = [];
+        },
+        setSort: function(property) {
+            if (this.sortProperty == property) {
+                // if user clicked same property, reverse the sort order
+                this.sortOrderAsc = !this.sortOrderAsc;
+            } else {
+                this.sortProperty = property;
+                this.sortOrderAsc = true;
+            }
         }
     },
     computed: {
         sortedTransactions: function() {
             const transactions_copy = [...this.sharedState.transactions];
-            transactions_copy.sort(function(a, b) {
-                    if (a.date > b.date) {
-                        return 1;
-                    } else if (a.date < b.date) {
-                        return -1;
-                    } else if (a.date == b.date) {
-                        if (a.description != b.description) {
-                            return a.description > b.description;
-                        } else {
-                            return a.amount > b.amount;
-                        }
+            transactions_copy.sort((a, b) => {
+                    let x = (this.sortOrderAsc ? 1 : -1);
+                    if (a[this.sortProperty] > b[this.sortProperty]) {
+                        return x;
+                    } else if (a[this.sortProperty] < b[this.sortProperty]) {
+                        return -x;
                     }
+                    return 0; 
                 });
             if (this.filtersSet) {
                 if (this.activeAccountFilters.length && this.activeCategoryFilters.length) {
@@ -198,6 +205,9 @@ export default {
     }
     .col {
         padding: 0.5em;
+    }
+    .col-sort {
+        cursor: pointer;
     }
     .col-1 {
         padding-left: 1em;
