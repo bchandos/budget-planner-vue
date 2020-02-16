@@ -88,7 +88,7 @@ export const store = {
         if (json_categories.status == 'success') {
             this.state.categories = json_categories.payload;
         } else {
-            this.setToastMessage('Failed to retrieve banks: ' + json_categories.payload.error_message);
+            this.setToastMessage('Failed to retrieve categories: ' + json_categories.payload.error_message);
             // should we clear banks?
         }
     },
@@ -144,6 +144,7 @@ export const store = {
             this.state.transactions.push(json_response.payload.new_transactions);
             // flatten the array as the payload was an array
             this.state.transactions = this.state.transactions.flat(Infinity);
+            this.loadCategories(); // Transaction import can create new categories
             this.setToastMessage(`${json_response.payload.total} transactions processed: ${json_response.payload.added} transactions added; ${json_response.payload.skipped} transactions skipped.`);
         } else {
             this.setToastMessage('Failed to import transactions: ' + json_response.payload.error_message);

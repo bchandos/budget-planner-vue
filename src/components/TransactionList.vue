@@ -6,10 +6,12 @@
             <li class="filter-label" @click="openFilters('account')">
                 Account
                 <img v-if="currentFilterGroup == 'account' && showFilters" class="image-icon" src="icons/up-icon.svg" />
+                <img v-else class="image-icon" src="icons/blank-icon.svg" />
             </li>
             <li class="filter-label" @click="openFilters('category')">
                 Category
                 <img v-if="currentFilterGroup == 'category' && showFilters" class="image-icon" src="icons/up-icon.svg" />
+                <img v-else class="image-icon" src="icons/blank-icon.svg" />
             </li>
             <transition name="simple-fade">
                 <li v-if="filtersSet" @click="clearFilters" class="filter-label filter-clear">
@@ -130,7 +132,19 @@ export default {
     computed: {
         sortedTransactions: function() {
             const transactions_copy = [...this.sharedState.transactions];
-            transactions_copy.sort(function(a, b) {return a.date > b.date});
+            transactions_copy.sort(function(a, b) {
+                    if (a.date > b.date) {
+                        return 1;
+                    } else if (a.date < b.date) {
+                        return -1;
+                    } else if (a.date == b.date) {
+                        if (a.description != b.description) {
+                            return a.description > b.description;
+                        } else {
+                            return a.amount > b.amount;
+                        }
+                    }
+                });
             if (this.filtersSet) {
                 if (this.activeAccountFilters.length && this.activeCategoryFilters.length) {
                     return transactions_copy.filter((t) => {
@@ -219,6 +233,8 @@ export default {
     .filter-menu {
         display: flex;
         list-style: none;
+        flex-wrap: wrap;
+        width: 70%;
     }
     .filter-label {
         position: relative;

@@ -3,7 +3,18 @@
         <td class="col col-1">{{ bankName(transaction.account) }}</td>
         <td class="col col-2">{{ transaction.date | neatDate }}</td> 
         <td class="col col-3">{{ transaction.description }}</td>
-        <td class="col col-4">{{ categoryName(transaction.category) }}</td>
+        <td v-if="transaction.category" class="col col-4">{{ categoryName(transaction.category) }}</td>
+        <td v-else class="col col-4">
+            <select v-model="category_select" id="category_select" v-on:change="storeTransaction">
+                <option value=""> </option>
+                <option 
+                v-for="category in sharedState.categories" 
+                v-bind:key="category.id" 
+                v-bind:value="category.id">
+                    {{ category.name }}
+                </option>
+            </select>
+        </td>
         <td class="col col-4-5">$</td>
         <td class="col col-5">{{ transaction.amount | neatNumber }}</td>
         <td class="col col-6">
@@ -24,13 +35,14 @@ export default {
     data() {
         return {
             sharedState: store.state,
+            category_select: null,
         }
     },
     props: {
         transaction: {
             type: Object,
             required: true
-        }
+        },
     },
     methods: {
         bankName(bank_id) {
@@ -56,12 +68,10 @@ export default {
         deleteTrans() {
             store.deleteTransaction(this.transaction.id);
         },
-        loadAccountTransactions() {
-            store.loadAccountTransactions(this.transaction.account);
+        storeTransaction() {
+            this.transaction.category = this.category_select;
+            store.editTransaction(this.transaction);
         },
-        loadCategoryTransactions() {
-            store.loadCategoryTransactions(this.transaction.category);
-        }
     },
     computed: {
     },
