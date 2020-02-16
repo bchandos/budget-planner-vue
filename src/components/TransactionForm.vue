@@ -20,6 +20,7 @@
         <p class="form-els">
             <label class="transaction_form_label" for="category_select">Category:</label>
             <select v-model="category_select" id="category_select">
+                <option value=""> </option>
                 <option v-for="category in sharedState.categories" v-bind:key="category.id" v-bind:value="category.id">
                     {{ category.name }}
                 </option>
