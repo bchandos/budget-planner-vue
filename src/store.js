@@ -6,6 +6,7 @@ export const store = {
             editMode: false,
             editId: -1,
             transaction: null,
+            relatedTransactions: null,
         },
         categories: [],
         toastMessage: '',
@@ -164,6 +165,17 @@ export const store = {
             this.setToastMessage('Failed to delete transaction: ' + json_response.payload.error_message);
         }
     },
+    async relatedTransactions(transaction_id) {
+        // get possibly related transactions from API and add to global state
+        const url = `http://127.0.0.1:8080/api/v0.1/transaction/${transaction_id}/related`;
+        const response = await fetch(url);
+        const json_response = await response.json();
+        if (json_response.status == 'success') {
+            this.state.transactionEdit.relatedTransactions = json_response.payload;
+        } else {
+            this.setToastMessage('Failed to retrieve related transactions: ' + json_response.payload.error_message);
+        }
+    },
     async addBank(bank) {
         // add bank via API and push to global state
         const url = 'http://127.0.0.1:8080/api/v0.1/accounts';
@@ -241,11 +253,13 @@ export const store = {
         this.state.transactionEdit.editMode = true;
         this.state.transactionEdit.editId = transaction.id;
         this.state.transactionEdit.transaction = transaction;
+        this.relatedTransactions(transaction.id);
     },
     exitEditMode() {
         this.state.transactionEdit.editMode = false;
         this.state.transactionEdit.editId = -1;
         this.state.transactionEdit.transaction = null;
+        this.state.transactionEdit.relatedTransactions = null;
     },
 
 };

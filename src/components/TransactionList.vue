@@ -259,7 +259,7 @@ export default {
         padding: 0;
     }
     .col-5 {
-        width: 4em;
+        width: 6em;
     }
     td.col-5 {
         text-align: right;

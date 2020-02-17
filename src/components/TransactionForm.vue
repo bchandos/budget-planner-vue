@@ -40,6 +40,14 @@
             <label class="transaction_form_label" for="amount">Amount:</label>
             <input v-model.number="amount" id="amount" placeholder="amount">
         </p>
+        <p class="form-els" v-if="sharedState.transactionEdit.relatedTransactions.length">
+            <label class="transaction_form_label" for="related-transactions">Related Transactions:</label>
+            <select v-model="relatedSelect" id="related-transactions">
+                <option v-for="t in sharedState.transactionEdit.relatedTransactions" v-bind:key="t.id" v-bind:value="t.id">
+                    {{ t.date }} - {{ t.description }}, {{ t.amount }}
+                </option>
+            </select>
+        </p>
         <p class="form-els">
             <input class="btn" :disabled="sharedState.transactionEdit.editMode" type="submit" value="Submit">
             <input class="btn" :disabled="!sharedState.transactionEdit.editMode" type="submit" value="Save Edits">
@@ -64,6 +72,7 @@ export default {
             category_select: null,
             new_category_mode: false,
             new_category: '',
+            relatedSelect: null,
         }
     },
     created: function() {
@@ -73,6 +82,7 @@ export default {
             this.date = this.sharedState.transactionEdit.transaction.date.slice(0, 10);
             this.amount = this.sharedState.transactionEdit.transaction.amount;
             this.category_select = this.sharedState.transactionEdit.transaction.category;
+            this.relatedSelect = this.sharedState.transactionEdit.transaction.reconcile_to;
         }
     },
     methods: {
@@ -82,7 +92,8 @@ export default {
                 'date': this.date,
                 'amount': this.amount,
                 'account': this.bank_select,
-                'category': this.category_select
+                'category': this.category_select,
+                'reconcile_to': this.relatedSelect,                
             }
             if (this.sharedState.transactionEdit.editMode) {
                 transaction.id = this.sharedState.transactionEdit.editId;
