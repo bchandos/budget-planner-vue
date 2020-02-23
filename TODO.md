@@ -3,12 +3,13 @@
 - ~~Auto close import modal on success~~
 - Account editing
     - ~~Account form~~
-    - Field mappings interface
+    - ~~Field mappings interface~~s
     - ~~Add new account~~
 - Messages system
     - ~~create message state~~
     - ~~create message div~~
-    - animate and dismiss messages
+    - ~~animate and dismiss messages~~
+    - timed dismissal
 - Transaction Import
     - ~~Filter banks by filename regex~~
     - ~~Just auto-select the bank...~~
@@ -17,5 +18,14 @@
     - ~~Format amounts with correct digits (client side)~~
 - Authentication implementation
     - There is some issues with Fetch and Firefox where sending "credentials: include" causes a 5 second delay on any non-GET request.
+- Do account balance calculations
+    - ~~Balance modal~~
+    - Then we can figure out....
+- Reonciliation logic
+    - What is the point of this?
+- Prettify the date format picker
+- Get rid of filename regex stuff, and do some other kind of check on import
+- Format numbers with commas
+
 
 
