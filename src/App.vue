@@ -9,10 +9,11 @@
         <button type="button" class="btn" @click="showTransModal">Add New Transaction</button>
         <button type="button" class="btn" @click="showImportModal">Import Transactions</button>
         <button type="button" class="btn" @click="showAccountModal">Account Settings</button>
+        <button type="button" class="btn" @click="showBalanceModal">Balances</button>
         
         <modal v-if="modalType == 'transaction'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
-                <div></div>
+                New Transaction
             </template>
             <template v-slot:body>        
                 <TransactionForm 
@@ -23,7 +24,7 @@
 
         <modal v-else-if="modalType == 'import'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
-                <div></div>
+                Import Transactions
             </template>
             <template v-slot:body>        
                 <ImportForm
@@ -34,10 +35,19 @@
 
         <modal v-else-if="modalType == 'account'" v-show="isModalVisible" @close="closeModal">
             <template v-slot:header>
-                <div></div>
+                Account Settings
             </template>
             <template v-slot:body>        
                 <AccountForm />
+            </template>
+        </modal>
+
+        <modal v-else-if="modalType == 'balance'" v-show="isModalVisible" @close="closeModal">
+            <template v-slot:header>
+                Account Balances
+            </template>
+            <template v-slot:body>        
+                <BalanceSheet />
             </template>
         </modal>
 
@@ -51,6 +61,7 @@ import TransactionList from './components/TransactionList.vue';
 import TransactionForm from './components/TransactionForm.vue';
 import ImportForm from './components/ImportForm.vue';
 import AccountForm from './components/AccountForm.vue';
+import BalanceSheet from './components/BalanceSheet.vue'
 import Modal from './components/Modal.vue';
 
 export default {
@@ -60,6 +71,7 @@ export default {
         TransactionForm,
         ImportForm,
         AccountForm,
+        BalanceSheet,
         Modal,
     },
     data() {
@@ -76,7 +88,7 @@ export default {
             store.loadBanks();
             store.loadCategories();
             // debug
-            store.setToastMessage('Test message');
+            // store.setToastMessage('Test message');
     },
     computed: {
         inEditMode: function() {
@@ -101,6 +113,10 @@ export default {
         },
         showAccountModal: function() {
             this.modalType = 'account';
+            this.isModalVisible = true;
+        },
+        showBalanceModal: function() {
+            this.modalType = 'balance';
             this.isModalVisible = true;
         },
         closeModal: function() {

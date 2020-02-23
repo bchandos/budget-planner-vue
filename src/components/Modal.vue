@@ -88,8 +88,9 @@
     }
 
     .modal-header {
+        font-weight: bold;
+        font-size: 1.5em;
         border-bottom: 1px solid #eeeeee;
-        color: #4AAE9B;
         justify-content: space-between;
     }
 
