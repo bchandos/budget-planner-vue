@@ -286,7 +286,7 @@ export default {
         cursor: pointer;
     }
     .filter-item {
-        position: relative;
+        /* position: relative; */
         margin-left: 1em;
         margin-bottom: 1em;
         padding: 0.25em;
