@@ -22,8 +22,32 @@
                 <input type="checkbox" name="debit_positive" v-model="bank.debit_positive">
             </p>
             <p class="form-els">
-                <label class="form-label" for="date_format">Date Format:</label>
-                <input name="date_format" v-model="bank.date_format">
+                <label class="form-label" for="date-format">Date Format:</label>
+                <select @change="dateFormatSelector" id="date-format-1">
+                    <option v-for="opt in dateOptions" v-bind:key="opt" :selected="opt == dateOptionSelectFirst">
+                        {{ opt }}
+                    </option>
+                </select>
+                <select @change="dateSeperatorSelector" id="date-seperator-1">
+                    <option v-for="opt in dateSeperators" v-bind:key="opt" :selected="opt == dateSeperatorSelect">
+                        {{ opt }}
+                    </option>
+                </select>
+                <select @change="dateFormatSelector" id="date-format-2">
+                    <option v-for="opt in dateOptions" v-bind:key="opt" :selected="opt == dateOptionSelectSecond">
+                        {{ opt }}
+                    </option>
+                </select>
+                <select @change="dateSeperatorSelector" id="date-seperator-2">
+                    <option v-for="opt in dateSeperators" v-bind:key="opt" :selected="opt == dateSeperatorSelect">
+                        {{ opt }}
+                    </option>
+                </select>
+                <select @change="dateFormatSelector" id="date-format-3">
+                    <option v-for="opt in dateOptions" v-bind:key="opt" :selected="opt == dateOptionSelectThird">
+                        {{ opt }}
+                    </option>
+                </select>
             </p>
         <h3>Field Mappings</h3>
         
@@ -66,6 +90,14 @@ export default {
             bank_selectRestore: null,
             newAccountMode: false,
             accountButtonText: 'Add New Account',
+            monthOptions: ['MM',],
+            dayOptions: ['DD',],
+            yearOptions: ['YY', 'YYYY'],
+            dateSeperators: ['/', '.', '-', '\\'],
+            dateSeperatorSelect: '/',
+            dateOptionSelectFirst: 'MM',
+            dateOptionSelectSecond: 'DD',
+            dateOptionSelectThird: 'YYYY',
         }
     },
 
@@ -73,6 +105,7 @@ export default {
         bank_select: function() {
             if (this.bank_select) {
                 this.bank = this.sharedState.banks.find((e) => { return e.id == this.bank_select });
+                this.parseDateFormat();
             } else {
                 this.bank = {};
             }
@@ -85,6 +118,7 @@ export default {
                 // get list of bank ids before transaction
                 const old_ids = this.sharedState.banks.map(e => e.id);
                 // wait for the transaction to complete
+                this.storeDateFormat();
                 await store.addBank(this.bank);
                 // get the new list of ids
                 const new_ids = this.sharedState.banks.map(e => e.id);
@@ -97,6 +131,7 @@ export default {
                 // flip out of edit mode
                 this.newAccount();
             } else {
+                this.storeDateFormat();
                 store.editBank(this.bank);
             }
         },
@@ -115,6 +150,46 @@ export default {
                 this.bank_select = this.bank_selectRestore;
                 this.accountButtonText = 'Add New Account';
             }
+        },
+        dateFormatSelector: function(e) {
+            let v = e.target.value;
+            let el = e.target.id;
+            if (el=='date-format-1') {
+                this.dateOptionSelectFirst = v;
+            } else if (el=='date-format-2') {
+                this.dateOptionSelectSecond = v;
+            } else if (el=='date-format-3') {
+                this.dateOptionSelectThird = v;
+            }
+        },
+        dateSeperatorSelector: function(e) {
+            this.dateSeperatorSelect = e.target.value;
+        },
+        parseDateFormat: function() {
+            const map = {'m': 'MM', 'd': 'DD', 'y': 'YY', 'Y': 'YYYY'};
+            const re = /%(\w)(\W)%(\w)(\W)%(\w)/g;
+            const arr = re.exec(this.bank.date_format);
+            if (arr.length==6) {
+                if (arr[2] == arr[4]) {
+                    this.dateSeperatorSelect = arr[2];
+                }
+                this.dateOptionSelectFirst = map[arr[1]];
+                this.dateOptionSelectSecond = map[arr[3]];
+                this.dateOptionSelectThird = map[arr[5]];
+            }
+        },
+        storeDateFormat: function() {
+            const map = {'MM': 'm', 'DD': 'd', 'YY': 'y', 'YYYY': 'Y'};
+            this.bank.date_format = `%${map[this.dateOptionSelectFirst]}${this.dateSeperatorSelect}%${map[this.dateOptionSelectSecond]}${this.dateSeperatorSelect}%${map[this.dateOptionSelectThird]}`;
+        }
+    },
+    computed: {
+        dateOptions: function() {
+            let opts = [];
+            opts = opts.concat(this.monthOptions);
+            opts = opts.concat(this.dayOptions);
+            opts = opts.concat(this.yearOptions);
+            return opts;
         }
     }
 }
