@@ -23,9 +23,11 @@
     - Then we can figure out....
 - Reonciliation logic
     - What is the point of this?
-- Prettify the date format picker
+- ~~Prettify the date format picker~~
+    - Once you select the first item, filter the list
+    - ~~Once you select the first seperator, all others follow suit~~
 - Get rid of filename regex stuff, and do some other kind of check on import
 - Format numbers with commas
-
+- Search for transactions
 
 
