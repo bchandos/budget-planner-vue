@@ -40,11 +40,11 @@
             <label class="transaction_form_label" for="amount">Amount:</label>
             <input v-model.number="amount" id="amount" placeholder="amount">
         </p>
-        <p class="form-els" v-if="sharedState.transactionEdit.relatedTransactions.length">
+        <p class="form-els" v-show="relatedTransactions">
             <label class="transaction_form_label" for="related-transactions">Related Transactions:</label>
             <select v-model="relatedSelect" id="related-transactions">
                 <option v-for="t in sharedState.transactionEdit.relatedTransactions" v-bind:key="t.id" v-bind:value="t.id">
-                    {{ t.date }} - {{ t.description }}, {{ t.amount }}
+                    {{ t.date|neatDate }} - {{ t.description }}, {{ t.amount }}
                 </option>
             </select>
         </p>
@@ -125,6 +125,31 @@ export default {
             this.bank_select = this.banks[Math.floor(Math.random()*this.banks.length)].value;
             this.category_select = 1;
         }
+    },
+    computed: {
+        relatedTransactions: function() {
+            if (!this.sharedState.transactionEdit.relatedTransactions) {
+                return false;
+            } else if (this.sharedState.transactionEdit.relatedTransactions.length==0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    },
+    watch: {
+
+    },
+    filters: {
+        neatDate: function(value) {
+            if (value) {
+                let d = value.split('T')[0];
+                return d.slice(5,7) + '/' + d.slice(8,10) + '/' + d.slice(0,4);
+            } else {
+                return '';
+            }
+
+        },
     }
 }
 </script>
