@@ -87,7 +87,7 @@ export default {
             showFilters: false,
             filterOptions: [],
             sortProperty: 'date',
-            sortOrderAsc: true,
+            sortOrderAsc: false,
             currentFilterGroup: '',
             activeAccountFilters: [],
             activeCategoryFilters: [],
