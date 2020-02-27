@@ -2,7 +2,7 @@
     <form id="import_form" v-on:submit.prevent="postData" method="POST">
         <p class="form-els">
             <label for="file_upload">Select File:</label>
-            <input type="file" ref="fileUpload" @change="processFile">
+            <input type="file" ref="fileUpload">
         </p>
         <p class="form-els">
             <label class="transaction_form_label" for="bank_select">Bank:</label>
@@ -30,15 +30,6 @@ export default {
     },
 
     methods: {
-        processFile: function () {
-            this.file = this.$refs.fileUpload.files[0];
-            this.sharedState.banks.forEach(e => {
-                let re = new RegExp(e.filename_re);
-                if (re.test(this.file.name)) {
-                    this.bank_select = e.id;
-                }
-            });
-        },
         postData: function() {
             store.importTransactions(this.file, this.bank_select);
             this.$emit('close');
