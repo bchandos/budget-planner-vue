@@ -14,7 +14,6 @@
                 </option>
             </select>
         </td>
-        <td class="col col-4-5">$</td>
         <td class="col col-5">{{ transaction.amount | neatNumber }}</td>
         <td class="col col-6">
             <input class="icon" type="image" src="icons/edit-icon.svg" v-if="!sharedState.transactionEdit.editMode || transaction.id != sharedState.transactionEdit.editId" href="" @click="toggleEdit">
@@ -80,7 +79,7 @@ export default {
             return d.slice(5,7) + '/' + d.slice(8,10) + '/' + d.slice(0,4);
         },
         neatNumber: function(value) {
-            return Number.parseFloat(value).toFixed(2);
+            return (value).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
         },
     },
 }

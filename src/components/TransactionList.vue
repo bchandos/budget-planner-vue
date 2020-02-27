@@ -47,7 +47,6 @@
                     @click="setSort('category')"
                     v-bind:class="{ 'col-sort-active-asc': sortProperty=='category' && sortOrderAsc, 'col-sort-active-desc': sortProperty=='category' && !sortOrderAsc }"
                     >Category </th>
-                <th class="col col-4-5"> </th>
                 <th class="col col-5 col-sort" 
                     @click="setSort('amount')"
                     v-bind:class="{ 'col-sort-active-asc': sortProperty=='amount' && sortOrderAsc, 'col-sort-active-desc': sortProperty=='amount' && !sortOrderAsc }"
