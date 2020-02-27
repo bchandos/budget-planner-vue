@@ -14,10 +14,6 @@
                 <input name="name" v-model="bank.name">
             </p>
             <p class="form-els">
-                <label class="form-label" for="filename_re">Filename Regex:</label>
-                <input name="filename_re" v-model="bank.filename_re">
-            </p>
-            <p class="form-els">
                 <label class="form-label" for="debit_positive">Debit is positive:</label>
                 <input type="checkbox" name="debit_positive" v-model="bank.debit_positive">
             </p>
