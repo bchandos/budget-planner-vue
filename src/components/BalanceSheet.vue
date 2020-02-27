@@ -2,7 +2,7 @@
     <div>
         <div v-for="bank in sharedState.banks" v-bind:key="bank.id">
             <h2>{{ bank.name }}</h2>
-            Balance: $ 
+            Balance:
             <span v-bind:class="[ bankBalance(bank.id) < 0 ? 'negative-balance' : 'positive-balance' ]">
                 {{ bankBalance(bank.id) | neatNumber }}
             </span>
@@ -36,7 +36,7 @@ export default {
     },
     filters: {
         neatNumber: function(value) {
-            return Number.parseFloat(value).toFixed(2);
+            return (value).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
         },
     },
 }
