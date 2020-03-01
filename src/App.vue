@@ -83,7 +83,7 @@ export default {
     },
 
     created: function() {
-            store.getApiKey();
+            // store.getApiKey();
             store.loadTransactions();
             store.loadBanks();
             store.loadCategories();
