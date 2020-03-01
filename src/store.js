@@ -243,8 +243,9 @@ export const store = {
             this.setToastMessage('Failed to add new category: ' + json_response.payload.error_message);
         }
     },
-    setToastMessage(message) {
+    setToastMessage(message, timeout=5000) {
         this.state.toastMessage = message;
+        setTimeout(()=>{ this.clearToastMessage(); }, timeout);
     },
     clearToastMessage() {
         this.state.toastMessage = '';
