@@ -2,7 +2,7 @@
     <form id="import_form" v-on:submit.prevent="postData" method="POST">
         <p class="form-els">
             <label for="file_upload">Select File:</label>
-            <input type="file" ref="fileUpload">
+            <input type="file" ref="fileUpload" @change="selectFile">
         </p>
         <p class="form-els">
             <label class="transaction_form_label" for="bank_select">Bank:</label>
@@ -30,6 +30,9 @@ export default {
     },
 
     methods: {
+        selectFile: function() {
+            this.file = this.$refs.fileUpload.files[0];
+        },
         postData: function() {
             store.importTransactions(this.file, this.bank_select);
             this.$emit('close');
