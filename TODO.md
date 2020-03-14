@@ -9,7 +9,8 @@
     - ~~create message state~~
     - ~~create message div~~
     - ~~animate and dismiss messages~~
-    - timed dismissal
+    - ~~timed dismissal~~
+    - smoother animation
 - Transaction Import
     - ~~Filter banks by filename regex~~
     - ~~Just auto-select the bank...~~
@@ -22,13 +23,21 @@
     - ~~Balance modal~~
     - Then we can figure out....
 - Reonciliation logic
-    - What is the point of this?
-    - ~~Regardless, remove the goddamn menu when there are no options!~~
+    - What is the point of this?11
+    - ~~Regardless, remove the goddamn 1 menu when there are no options!~
+    - We want to be able to tie CC payments together I think? 
+    - If we want to enter transactions as they happen and then reconcile against the bank's version - this seems like the primary function...
+    - If so, what happens to the original4000 (reconciled_to) transaction? Hidden? Only accesible through the main?
+    - If so, we'll need to have a more advanced interface for reconciling
+    - Logic to automatically reconcile? Perhaps imported transactions should be flagged as such.
 - ~~Prettify the date format picker~~
     - Once you select the first item, filter the list
     - ~~Once you select the first seperator, all others follow suit~~
 - ~~Get rid of filename regex stuff~~, and do some other kind of check on import
-- Format numbers with commas
+- ~~Format numbers with commas~~
 - Search for transactions
+- Transaction form
+    - When creating a new category, should that auto-populate that transaction's category select?
+    - There is a delay when storing the transaction before the new one is available, means you can't immediately get the ID to set the select.
 
 
