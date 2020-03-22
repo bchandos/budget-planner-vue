@@ -9,7 +9,9 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
-    "vue": "^2.6.10",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "vue": "^2.6.11",
     "vuetify": "^2.2.18"
   },
   "devDependencies": {
@@ -19,7 +21,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "^2.6.11"
   },
   "eslintConfig": {
     "root": true,

@@ -1,5 +1,5 @@
 <template>
-    <div id="app">
+    <v-app>
         <transition name="fade">
             <div id="toast-message" v-show="sharedState.toastMessage">
                 {{ sharedState.toastMessage }}
@@ -52,7 +52,7 @@
         </modal>
 
         <TransactionList />
-    </div>
+    </v-app>
 </template>
 
 <script>
