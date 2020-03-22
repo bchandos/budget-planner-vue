@@ -1,169 +1,110 @@
 <template>
-    <form id="transaction_form" v-bind:class="{ editing: sharedState.transactionEdit.editMode, not_editing: !sharedState.transactionEdit.editMode }" v-on:submit.prevent="sendTrans" method="POST">
-        <input type="hidden" v-model="sharedState.transactionEdit.editId">
-        <p class="form-els">
-            <label class="transaction_form_label" for="date">Date:</label>
-            <input type="date" v-model="date" id="date">
-        </p>
-        <p class="form-els">
-            <label class="transaction_form_label" for="bank_select">Bank:</label>
-            <select v-model="bank_select" id="bank_select">
-                <option v-for="bank in sharedState.banks" v-bind:key="bank.id" v-bind:value="bank.id">
-                    {{ bank.name }}
-                </option>
-            </select>
-        </p>
-        <p class="form-els">
-            <label class="transaction_form_label" for="description">Description:</label>
-            <input v-model="description" id="description" placeholder="description">
-        </p>
-        <p class="form-els">
-            <label class="transaction_form_label" for="category_select">Category:</label>
-            <select v-model="category_select" id="category_select">
-                <option value=""> </option>
-                <option v-for="category in sharedState.categories" v-bind:key="category.id" v-bind:value="category.id">
-                    {{ category.name }}
-                </option>
-            </select>
-            <button class="btn small-btn" v-on:click.prevent="addNewCategory">
-                {{ new_category_mode ? 'Cancel' : '+ New Category' }}
-            </button>
-        </p>
-        <transition name="slide-fade">
-            <p class="form-els hidden-form-el" v-show="new_category_mode">
-                <label class="transaction_form_label" for="add_category">New Category:</label>
-                <input v-model="new_category" id="add_category">
-                <button class="btn small-btn" v-on:click.prevent="submitNewCategory" :disabled="!new_category">Submit</button>
-            </p>
-        </transition>
-        <p class="form-els">
-            <label class="transaction_form_label" for="amount">Amount:</label>
-            <input v-model.number="amount" id="amount" placeholder="amount">
-        </p>
-        <p class="form-els" v-show="relatedTransactions">
-            <label class="transaction_form_label" for="related-transactions">Related Transactions:</label>
-            <select v-model="relatedSelect" id="related-transactions">
-                <option v-for="t in sharedState.transactionEdit.relatedTransactions" v-bind:key="t.id" v-bind:value="t.id">
-                    {{ t.date|neatDate }} - {{ t.description }}, {{ t.amount }}
-                </option>
-            </select>
-        </p>
-        <p class="form-els">
-            <input class="btn" :disabled="sharedState.transactionEdit.editMode" type="submit" value="Submit">
-            <input class="btn" :disabled="!sharedState.transactionEdit.editMode" type="submit" value="Save Edits">
-        </p>
-    </form>
+    <v-dialog v-model="sharedState.transactionEdit.editMode" max-width="500px">
+        <v-card>
+            <v-card-title>
+                <span class="headline">Edit Transaction</span>
+            </v-card-title>
+
+            <v-card-text>
+                <v-container v-if="sharedState.transactionEdit.transaction">
+                    <v-row>
+                        <v-col >
+                            <v-select 
+                                v-model="sharedState.transactionEdit.transaction.account"
+                                :items="sharedState.banks" 
+                                label="Account"
+                                item-text="name"
+                                item-value="id">
+                            </v-select> 
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-menu
+                                v-model="dateMenu"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="290px">
+                                <template v-slot:activator="{ on }">
+                                <v-text-field
+                                    v-model="sharedState.transactionEdit.transaction.date"
+                                    label="Date"
+                                    prepend-icon="mdi-calendar"
+                                    readonly
+                                    v-on="on"
+                                ></v-text-field>
+                                </template>
+                                <v-date-picker v-model="neatDate" @input="dateMenu = false"></v-date-picker>
+                            </v-menu>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-text-field v-model="sharedState.transactionEdit.transaction.description" label="Description"></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <v-text-field v-model="sharedState.transactionEdit.transaction.amount" label="Amount"></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
-
-import { store } from '../store.js';
+import { store } from "../store.js";
 
 export default {
-
     data() {
         return {
             sharedState: store.state,
-            
-            description: '',
-            date: '',
-            amount: null,
-            bank_select: null,
-            category_select: null,
-            new_category_mode: false,
-            new_category: '',
-            relatedSelect: null,
-        }
+            dateMenu: false,
+        };
     },
-    created: function() {
-        if (this.sharedState.transactionEdit.editMode) {
-            this.description = this.sharedState.transactionEdit.transaction.description;
-            this.bank_select = this.sharedState.transactionEdit.transaction.account;
-            this.date = this.sharedState.transactionEdit.transaction.date.slice(0, 10);
-            this.amount = this.sharedState.transactionEdit.transaction.amount;
-            this.category_select = this.sharedState.transactionEdit.transaction.category;
-            this.relatedSelect = this.sharedState.transactionEdit.transaction.reconcile_to;
-        }
-    },
+    
     methods: {
-        sendTrans: function() {
-            let transaction = {
-                'description': this.description,
-                'date': this.date,
-                'amount': this.amount,
-                'account': this.bank_select,
-                'category': this.category_select,
-                'reconcile_to': this.relatedSelect,                
-            }
-            if (this.sharedState.transactionEdit.editMode) {
-                transaction.id = this.sharedState.transactionEdit.editId;
-                store.editTransaction(transaction);
-                this.$emit('close');
-            } else {
-                store.addTransaction(transaction);
-            }
+        save: function() {
+            store.editTransaction(this.sharedState.transactionEdit.transaction);
         },
-        addNewCategory: function() {
-            this.new_category_mode = !this.new_category_mode;
-        },
-        submitNewCategory: function() {
-            if (this.new_category) {
-                let category = {
-                    'name': this.new_category
-                }
-                store.addCategory(category);
-                this.new_category = '';
-                this.new_category_mode = false;
-            }
-        },
-        _debugVals: function() {
-            let dict = ['Williamsburg distillery', 'dreamcatcher', 'selfies', 'tumblr', 'palo santo', 'Edison bulb', 'roof party', 'copper mug'];
-            this.description = dict[Math.floor(Math.random()*dict.length)] + ' ' + dict[Math.floor(Math.random()*dict.length)];
-            let d = new Date(Math.random()*3000000000000);
-            this.date = d.toISOString().slice(0, 10);
-            this.amount = Math.floor(Math.random()*-1000);
-            this.bank_select = this.banks[Math.floor(Math.random()*this.banks.length)].value;
-            this.category_select = 1;
+        close: function() {
+            store.exitEditMode();
         }
+    
     },
     computed: {
+        neatDate: function() {
+            return this.sharedState.transactionEdit.transaction.date.split('T')[0];
+        },
         relatedTransactions: function() {
             if (!this.sharedState.transactionEdit.relatedTransactions) {
                 return false;
-            } else if (this.sharedState.transactionEdit.relatedTransactions.length==0) {
+            } else if (
+                this.sharedState.transactionEdit.relatedTransactions.length == 0
+            ) {
                 return false;
             } else {
                 return true;
             }
         }
     },
-    watch: {
-
-    },
+    watch: {},
     filters: {
-        neatDate: function(value) {
-            if (value) {
-                let d = value.split('T')[0];
-                return d.slice(5,7) + '/' + d.slice(8,10) + '/' + d.slice(0,4);
-            } else {
-                return '';
-            }
-
-        },
+        
     }
-}
+};
 </script>
 
 <style>
-    .slide-fade-enter-active, .slide-fade-leave-active {
-        transition: opacity 500ms ease, transform 500ms ease;
-    }
-    .slide-fade-enter, .slide-fade-leave-to {
-        opacity: 0;
-        transform: scaleY(0);
-    }
-    .slide-fade-enter-to, .slide-fade-leave {
-        opacity: 1;
-        transform: scaleY(1);
-    }
+
 </style>

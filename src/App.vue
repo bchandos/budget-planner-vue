@@ -1,56 +1,6 @@
 <template>
-    <v-app>
-        <transition name="fade">
-            <div id="toast-message" v-show="sharedState.toastMessage">
-                {{ sharedState.toastMessage }}
-                <button class="clear-toast-btn" @click="clearToast">X</button>
-            </div>
-        </transition>
-        <button type="button" class="btn" @click="showTransModal">Add New Transaction</button>
-        <button type="button" class="btn" @click="showImportModal">Import Transactions</button>
-        <button type="button" class="btn" @click="showAccountModal">Account Settings</button>
-        <button type="button" class="btn" @click="showBalanceModal">Balances</button>
-        
-        <modal v-if="modalType == 'transaction'" v-show="isModalVisible" @close="closeModal">
-            <template v-slot:header>
-                New Transaction
-            </template>
-            <template v-slot:body>        
-                <TransactionForm 
-                    @close="closeModal"
-                    />
-            </template>
-        </modal>
-
-        <modal v-else-if="modalType == 'import'" v-show="isModalVisible" @close="closeModal">
-            <template v-slot:header>
-                Import Transactions
-            </template>
-            <template v-slot:body>        
-                <ImportForm
-                    @close="closeModal"
-                />
-            </template>
-        </modal>
-
-        <modal v-else-if="modalType == 'account'" v-show="isModalVisible" @close="closeModal">
-            <template v-slot:header>
-                Account Settings
-            </template>
-            <template v-slot:body>        
-                <AccountForm />
-            </template>
-        </modal>
-
-        <modal v-else-if="modalType == 'balance'" v-show="isModalVisible" @close="closeModal">
-            <template v-slot:header>
-                Account Balances
-            </template>
-            <template v-slot:body>        
-                <BalanceSheet />
-            </template>
-        </modal>
-
+    <v-app id="main-app">
+        <TransactionForm />
         <TransactionList />
     </v-app>
 </template>
@@ -136,80 +86,10 @@ export default {
 </script>
 
 <style>
-    #app {
+    #main-app {
         width: 70%;
         margin: 0 auto;
         padding: 0 2em;
         background-color: #fdfdfd;
-    }
-    #toast-message {
-        width: 70%;
-        margin: 1em;
-        padding: 1em;
-        border: 1px solid rgba(255, 94, 94, 0.5);
-        background-color:rgba(216, 130, 130, 0.5);
-        border-radius: 5px;
-    }
-    .form-els {
-        margin: 0.5em 0;
-    }    
-    .icon {
-        width: 1.25em;
-    }
-    .image-icon {
-        width: 0.75em;
-    }
-    .btn {
-        background-color: lightgray;
-        border: 1px solid lightgray;
-        color: black;
-        font-size: 1.2em;
-        padding: 0.5em 1em;
-        margin: 0.5em 1em;
-        border-radius: 4px;
-        transition-duration: 200ms;
-    }
-    .btn:disabled {
-        color: gray;
-        opacity: 0.8;
-    }
-    .btn:hover:not([disabled]) {
-        border: 1px solid gray;
-        transition-duration: 400ms;
-    }
-
-    .small-btn {
-        font-size: 0.7em;
-        padding: 1px;
-        margin: 1px;
-    }
-
-    .hidden {
-        display: none;
-    }
-
-    #transaction_form {
-        max-width: 95%;
-        border: 1px solid black;
-        padding: 1em;
-        background-color: rgba(250, 250, 210, 0.5);
-        border-radius: 3px;
-    }
-
-    #transaction_form.editing {
-        border: 1px solid green;
-        background-color: rgba(255, 94, 94, 0.5);
-    }
-    .clear-toast-btn {
-        border: none;
-        background: none;
-        float: right;
-        font-size: 1.2em;
-    }
-    .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s;
-    }
-    .fade-enter, .fade-leave-to {
-        opacity: 0;
     }
 </style>

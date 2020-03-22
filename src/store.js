@@ -253,7 +253,7 @@ export const store = {
     enterEditMode(transaction) {
         this.state.transactionEdit.editMode = true;
         this.state.transactionEdit.editId = transaction.id;
-        this.state.transactionEdit.transaction = transaction;
+        this.state.transactionEdit.transaction = {...transaction};
         this.relatedTransactions(transaction.id);
     },
     exitEditMode() {
