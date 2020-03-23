@@ -1,7 +1,25 @@
 <template>
     <v-app id="main-app">
-        <TransactionForm />
-        <TransactionList />
+        <NavigationDrawer />
+        <ImportForm />
+        <v-app-bar app color="teal">
+            <v-app-bar-nav-icon @click.stop="sharedState.drawerOpen = !sharedState.drawerOpen" />
+            <v-toolbar-title>Budget Planner</v-toolbar-title>
+        </v-app-bar>
+        <v-content>
+            <v-row justify="center">
+                <v-alert
+                    dense
+                    width="40em"
+                    type="warning"
+                    transition="slide-y-transition"
+                    dismissible
+                    v-show="sharedState.toastMessage"
+                >{{ sharedState.toastMessage }}</v-alert>
+            </v-row>
+            <TransactionForm />
+            <TransactionList />
+        </v-content>
     </v-app>
 </template>
 
@@ -13,6 +31,7 @@ import ImportForm from './components/ImportForm.vue';
 import AccountForm from './components/AccountForm.vue';
 import BalanceSheet from './components/BalanceSheet.vue'
 import Modal from './components/Modal.vue';
+import NavigationDrawer from './components/NavigationDrawer.vue';
 
 export default {
     name: 'app',
@@ -23,6 +42,7 @@ export default {
         AccountForm,
         BalanceSheet,
         Modal,
+        NavigationDrawer,
     },
     data() {
         return {
@@ -86,10 +106,5 @@ export default {
 </script>
 
 <style>
-    #main-app {
-        width: 70%;
-        margin: 0 auto;
-        padding: 0 2em;
-        background-color: #fdfdfd;
-    }
+
 </style>

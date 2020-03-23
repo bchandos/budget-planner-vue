@@ -12,7 +12,6 @@
             ></v-text-field>
         </v-card-title>
         <v-data-table
-            calculate-widths
             sort-by="date"
             :search="search"
             :headers="headers"
