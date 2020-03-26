@@ -22,7 +22,7 @@
                     <v-icon>mdi-upload</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                    <v-list-item-title>Add New Transaction</v-list-item-title>
+                    <v-list-item-title>Import Transactions</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
         </v-list>

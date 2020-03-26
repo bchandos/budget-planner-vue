@@ -24,8 +24,8 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="sharedState.importDialog = false">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="postData">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="close">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="postData">Import</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -45,6 +45,11 @@ export default {
     methods: {
         postData: function() {
             store.importTransactions(this.file, this.bank_select);
+            this.close();
+        },
+        close: function() {
+            this.bank_select = null;
+            this.file = null;
             this.sharedState.importDialog = false;
         }
     }
