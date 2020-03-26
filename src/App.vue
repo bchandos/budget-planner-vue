@@ -2,9 +2,14 @@
     <v-app id="main-app">
         <NavigationDrawer />
         <ImportForm />
+        <EditTransactionForm />
+        <NewTransactionForm />
         <v-app-bar app color="teal">
             <v-app-bar-nav-icon @click.stop="sharedState.drawerOpen = !sharedState.drawerOpen" />
             <v-toolbar-title>Budget Planner</v-toolbar-title>
+            <v-btn icon @click.native="sharedState.newTransactionDialog = true">
+                <v-icon>mdi-cash-plus</v-icon>
+            </v-btn>
         </v-app-bar>
         <v-content>
             <v-row justify="center">
@@ -17,7 +22,7 @@
                     v-show="sharedState.toastMessage"
                 >{{ sharedState.toastMessage }}</v-alert>
             </v-row>
-            <TransactionForm />
+            
             <TransactionList />
         </v-content>
     </v-app>
@@ -26,23 +31,25 @@
 <script>
 import { store } from './store.js';
 import TransactionList from './components/TransactionList.vue';
-import TransactionForm from './components/TransactionForm.vue';
+import EditTransactionForm from './components/EditTransactionForm.vue';
 import ImportForm from './components/ImportForm.vue';
 import AccountForm from './components/AccountForm.vue';
 import BalanceSheet from './components/BalanceSheet.vue'
 import Modal from './components/Modal.vue';
 import NavigationDrawer from './components/NavigationDrawer.vue';
+import NewTransactionForm from './components/NewTransactionForm.vue'
 
 export default {
     name: 'app',
     components: {
         TransactionList,
-        TransactionForm,
+        EditTransactionForm,
         ImportForm,
         AccountForm,
         BalanceSheet,
         Modal,
         NavigationDrawer,
+        NewTransactionForm,
     },
     data() {
         return {
