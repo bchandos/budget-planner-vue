@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card width="70%" class="mx-auto">
         <v-card-title>
             Transactions
             <v-spacer></v-spacer>
@@ -18,7 +18,7 @@
             :items="sharedState.transactions"
             :items-per-page="15"
         >
-            <template v-slot:item.account="{item}">{{ bankName(item.account) }}</template>
+            <template v-slot:item.account="{item}">{{ item.account_id.name }}</template>
             <template v-slot:item.date="{item}">{{ item.date | neatDate }}</template>
             <template v-slot:item.amount="{item}">{{ item.amount | neatNumber }}</template>
             <template v-slot:item.actions="{item}">
@@ -41,37 +41,40 @@ export default {
             headers: [
                 {
                     text: "Account",
-                    value: "account",
+                    value: "account_id.name",
                     sortable: true,
                     filterable: true,
-                    width: "4em"
+                    width: "15%"
                 },
                 {
                     text: "Date",
                     value: "date",
                     sortable: true,
                     filterable: true,
-                    width: "3em"
+                    width: "15%"
                 },
                 {
                     text: "Description",
                     value: "description",
                     sortable: true,
                     filterable: true,
-                    width: "10em"
+                    width: "40%"
                 },
                 {
                     text: "Amount",
                     value: "amount",
                     sortable: true,
                     filterable: true,
-                    width: "5em"
+                    width: "15%"
                 },
                 {
                     text: "Actions",
                     value: "actions",
-                    width: "3em"
-                }
+                    width: "15%",
+                    sortable: false,
+                    filterable: false
+                },
+
             ],
             showFilters: false,
             filterOptions: [],
@@ -99,116 +102,10 @@ export default {
         sendToEdit: function(t) {
             store.enterEditMode(t);
         },
-        openFilters: function(filter_type) {
-            // open the filter section if not open
-            // close if selecting the same filter group
-            this.showFilters = !(
-                this.currentFilterGroup == filter_type && this.showFilters
-            );
-            this.currentFilterGroup = filter_type;
-            if (filter_type == "account") {
-                this.filterOptions = this.sharedState.banks;
-            } else if (filter_type == "category") {
-                this.filterOptions = this.sharedState.categories;
-            }
-        },
-        filterActive: function(id) {
-            // is this item a current filter item?
-            if (this.currentFilterGroup) {
-                if (this.currentFilterGroup == "account") {
-                    return this.activeAccountFilters.includes(id);
-                } else if (this.currentFilterGroup == "category") {
-                    return this.activeCategoryFilters.includes(id);
-                }
-            }
-        },
-        toggleActiveFilter: function(id) {
-            // add or remove item from its respective filter group
-            if (this.currentFilterGroup) {
-                if (this.currentFilterGroup == "account") {
-                    if (this.activeAccountFilters.includes(id)) {
-                        const index = this.activeAccountFilters.indexOf(id);
-                        this.activeAccountFilters.splice(index, 1);
-                    } else {
-                        this.activeAccountFilters.push(id);
-                    }
-                } else if (this.currentFilterGroup == "category") {
-                    if (this.activeCategoryFilters.includes(id)) {
-                        const index = this.activeCategoryFilters.indexOf(id);
-                        this.activeCategoryFilters.splice(index, 1);
-                    } else {
-                        this.activeCategoryFilters.push(id);
-                    }
-                }
-            }
-        },
-        clearFilters: function() {
-            this.showFilters = false;
-            this.filterOptions = [];
-            this.currentFilterGroup = "";
-            this.activeAccountFilters = [];
-            this.activeCategoryFilters = [];
-        },
-        setSort: function(property) {
-            if (this.sortProperty == property) {
-                // if user clicked same property, reverse the sort order
-                this.sortOrderAsc = !this.sortOrderAsc;
-            } else {
-                // otherwise set this as the sort property and default to Ascending
-                this.sortProperty = property;
-                this.sortOrderAsc = true;
-            }
-        }
+        
     },
     computed: {
-        sortedTransactions: function() {
-            // return the transaction list with sorts and filters applied
-            const transactions_copy = [...this.sharedState.transactions];
-            // sorts
-            transactions_copy.sort((a, b) => {
-                let x = this.sortOrderAsc ? 1 : -1;
-                if (a[this.sortProperty] > b[this.sortProperty]) {
-                    return x;
-                } else if (a[this.sortProperty] < b[this.sortProperty]) {
-                    return -x;
-                }
-                return 0;
-            });
-            // filters
-            if (this.filtersSet) {
-                if (
-                    this.activeAccountFilters.length &&
-                    this.activeCategoryFilters.length
-                ) {
-                    // if there are filters in both areas, apply them both
-                    return transactions_copy.filter(t => {
-                        return (
-                            this.activeAccountFilters.includes(t.account) &&
-                            this.activeCategoryFilters.includes(t.category)
-                        );
-                    });
-                } else {
-                    // otherwise, apply only the relevant filter
-                    return transactions_copy.filter(t => {
-                        return (
-                            this.activeAccountFilters.includes(t.account) ||
-                            this.activeCategoryFilters.includes(t.category)
-                        );
-                    });
-                }
-            } else {
-                // if there are no filters, just return the sorted array
-                return transactions_copy;
-            }
-        },
-        filtersSet: function() {
-            // are filters set?
-            return (
-                this.currentFilterGroup &&
-                (this.activeAccountFilters.length ||
-                    this.activeCategoryFilters.length)
-            );
-        }
+        
     },
     filters: {
         neatDate: function(value) {
