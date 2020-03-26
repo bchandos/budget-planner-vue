@@ -14,7 +14,8 @@
                                 :items="sharedState.banks" 
                                 label="Account"
                                 item-text="name"
-                                item-value="id">
+                                item-value="id"
+                                prepend-icon="mdi-bank">
                             </v-select> 
                         </v-col>
                     </v-row>
@@ -47,7 +48,10 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-text-field v-model="sharedState.transactionEdit.transaction.amount" label="Amount"></v-text-field>
+                            <v-text-field 
+                            v-model="neatNumber" 
+                            label="Amount"
+                            prepend-icon="mdi-cash-usd"></v-text-field>
                         </v-col>
                     </v-row>
                 </v-container>
@@ -85,6 +89,10 @@ export default {
     computed: {
         neatDate: function() {
             return this.sharedState.transactionEdit.transaction.date.split('T')[0];
+        },
+        neatNumber: function() {
+            let value = this.sharedState.transactionEdit.transaction.amount;
+            return (value).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
         },
         relatedTransactions: function() {
             if (!this.sharedState.transactionEdit.relatedTransactions) {
