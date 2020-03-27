@@ -35,7 +35,6 @@ import EditTransactionForm from './components/EditTransactionForm.vue';
 import ImportForm from './components/ImportForm.vue';
 import AccountForm from './components/AccountForm.vue';
 import BalanceSheet from './components/BalanceSheet.vue'
-import Modal from './components/Modal.vue';
 import NavigationDrawer from './components/NavigationDrawer.vue';
 import NewTransactionForm from './components/NewTransactionForm.vue'
 
@@ -47,7 +46,6 @@ export default {
         ImportForm,
         AccountForm,
         BalanceSheet,
-        Modal,
         NavigationDrawer,
         NewTransactionForm,
     },
