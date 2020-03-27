@@ -10,7 +10,7 @@
                     <v-row>
                         <v-col >
                             <v-select 
-                                v-model="sharedState.transactionEdit.transaction.account"
+                                v-model="sharedState.transactionEdit.transaction.account_id.id"
                                 :items="sharedState.banks" 
                                 label="Account"
                                 item-text="name"
@@ -82,6 +82,7 @@ export default {
             store.editTransaction(this.sharedState.transactionEdit.transaction);
         },
         close: function() {
+            this.dateMenu = false;
             store.exitEditMode();
         }
     
