@@ -7,6 +7,7 @@
 
             <v-card-text>
                 <v-container>
+                    <v-form lazy-validation ref="form">
                     <v-row>
                         <v-col >
                             <v-select 
@@ -16,7 +17,8 @@
                                 item-text="name"
                                 item-value="id"
                                 prepend-icon="mdi-bank"
-                                required>
+                                required
+                                :rules="[v => !!v || 'Select an account']">
                             </v-select> 
                         </v-col>
                     </v-row>
@@ -36,25 +38,33 @@
                                     prepend-icon="mdi-calendar"
                                     readonly
                                     v-on="on"
+                                    :rules="[v => !!v || 'Select a date']"
                                 ></v-text-field>
                                 </template>
-                                <v-date-picker v-model="transaction.date" @input="dateMenu = false"></v-date-picker>
+                                <v-date-picker 
+                                v-model="transaction.date" 
+                                @input="dateMenu = false"></v-date-picker>
                             </v-menu>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-text-field v-model="transaction.description" label="Description"></v-text-field>
+                            <v-text-field 
+                                v-model="transaction.description" 
+                                label="Description"
+                                :rules="[v => !!v || 'Enter a description']"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
                             <v-text-field 
-                            v-model="transaction.amount" 
-                            label="Amount"
-                            prepend-icon="mdi-cash-usd"></v-text-field>
+                                v-model="transaction.amount" 
+                                label="Amount"
+                                :rules="[v => !!v || 'Enter transaction amount']"
+                                prepend-icon="mdi-cash-usd"></v-text-field>
                         </v-col>
                     </v-row>
+                    </v-form>
                 </v-container>
             </v-card-text>
 
@@ -88,6 +98,7 @@ export default {
         save: function() {
             store.addTransaction(this.transaction);
             this.close();
+            
         },
         close: function() {
             this.transaction = {
@@ -97,15 +108,12 @@ export default {
                 amount: null,
             };
             this.sharedState.newTransactionDialog = false;
+            this.$refs.form.resetValidation();
         }
-    
     },
-    computed: {
-    },
+    computed: {},
     watch: {},
-    filters: {
-        
-    }
+    filters: {}
 };
 </script>
 
