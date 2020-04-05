@@ -2,7 +2,7 @@
     <v-dialog v-model="sharedState.newTransactionDialog" max-width="500px">
         <v-card>
             <v-card-title>
-                <span class="headline">CreateTransaction</span>
+                <span class="headline">Create Transaction</span>
             </v-card-title>
 
             <v-card-text>
@@ -56,6 +56,19 @@
                         </v-col>
                     </v-row>
                     <v-row>
+                        <v-col >
+                            <v-select 
+                                v-model="transaction.cateogory_id"
+                                :items="sharedState.categories" 
+                                label="Category"
+                                item-text="name"
+                                item-value="id"
+                                prepend-icon="mdi-tag"
+                                >
+                            </v-select> 
+                        </v-col>
+                    </v-row>
+                    <v-row>
                         <v-col>
                             <v-text-field 
                                 v-model="transaction.amount" 
@@ -90,6 +103,7 @@ export default {
                 date: '',
                 description: '',
                 amount: null,
+                category_id: null,
             }
         };
     },

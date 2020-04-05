@@ -47,6 +47,19 @@
                         </v-col>
                     </v-row>
                     <v-row>
+                        <v-col >
+                            <v-select 
+                                v-model="sharedState.transactionEdit.transaction.category_id.id"
+                                :items="sharedState.categories" 
+                                label="Category"
+                                item-text="name"
+                                item-value="id"
+                                prepend-icon="mdi-tag"
+                                >
+                            </v-select> 
+                        </v-col>
+                    </v-row>
+                    <v-row>
                         <v-col>
                             <v-text-field 
                             v-model="neatNumber" 

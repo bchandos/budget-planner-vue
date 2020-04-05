@@ -23,7 +23,19 @@
             <template v-slot:item.amount="{item}">{{ item.amount | neatNumber }}</template>
             <template v-slot:item.actions="{item}">
                 <v-icon small class="mr-2" @click="sendToEdit(item)">mdi-pencil</v-icon>
-                <v-icon small @click="deleteTrans(item.id)">mdi-delete</v-icon>
+                <v-icon small class="ml-2" @click="deleteTrans(item.id)">mdi-delete</v-icon>
+            </template>
+            <template v-slot:item.category_id.name="{item}">
+                <v-select 
+                    :disabled="item.category_id.name"
+                    :append-icon="[item.category_id.name ? '' : '$dropdown']"
+                    v-model="item.category_id.id"
+                    :items="sharedState.categories"
+                    item-text="name"
+                    item-value="id"
+                    @change="updateCategory(item)"
+                    >
+                </v-select>
             </template>
         </v-data-table>
     </v-card>
@@ -51,26 +63,33 @@ export default {
                     value: "date",
                     sortable: true,
                     filterable: true,
-                    width: "15%"
+                    width: "12%"
                 },
                 {
                     text: "Description",
                     value: "description",
                     sortable: true,
                     filterable: true,
-                    width: "40%"
+                    width: "35%"
+                },
+                {
+                    text: 'Category',
+                    value: 'category_id.name',
+                    sortable: true,
+                    filterable: true,
+                    width: '18%'
                 },
                 {
                     text: "Amount",
                     value: "amount",
                     sortable: true,
                     filterable: true,
-                    width: "15%"
+                    width: "10%"
                 },
                 {
                     text: "Actions",
                     value: "actions",
-                    width: "15%",
+                    width: "10%",
                     sortable: false,
                     filterable: false
                 },
@@ -86,21 +105,22 @@ export default {
         };
     },
     methods: {
-        bankName(bank_id) {
-            // let bank_id = this.transaction.account;
-            if (this.sharedState.banks.length) {
-                return this.sharedState.banks.find(function(o) {
-                    return o.id == bank_id;
-                }).name;
-            } else {
-                return "Loading...";
-            }
-        },
         deleteTrans: function(t_id) {
             store.deleteTransaction(t_id);
         },
         sendToEdit: function(t) {
             store.enterEditMode(t);
+        },
+        updateCategory: function(item) {
+            let transaction = {
+                id: item.id,
+                account_id: item.account_id.id,
+                date: item.date,
+                description: item.description,
+                amount: item.amount,
+                category_id: item.category_id.id
+            }
+            store.editTransaction(transaction);
         },
         
     },
@@ -124,4 +144,7 @@ export default {
 </script>
 
 <style>
+.v-select__selection--disabled {
+    color: #555 !important;
+}
 </style>
