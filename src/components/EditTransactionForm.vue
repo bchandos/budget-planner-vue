@@ -104,9 +104,14 @@ export default {
         neatDate: function() {
             return this.sharedState.transactionEdit.transaction.date.split('T')[0];
         },
-        neatNumber: function() {
-            let value = this.sharedState.transactionEdit.transaction.amount;
-            return (value).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+        neatNumber: { 
+            get: function() {
+                const value = this.sharedState.transactionEdit.transaction.amount;
+                return (value).toLocaleString('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+            },
+            set: function(newValue) {
+                this.sharedState.transactionEdit.transaction.amount = newValue.replace('$', '');
+            }
         },
         relatedTransactions: function() {
             if (!this.sharedState.transactionEdit.relatedTransactions) {
