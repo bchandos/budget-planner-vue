@@ -113,22 +113,9 @@ export default {
                 this.sharedState.transactionEdit.transaction.amount = newValue.replace('$', '');
             }
         },
-        relatedTransactions: function() {
-            if (!this.sharedState.transactionEdit.relatedTransactions) {
-                return false;
-            } else if (
-                this.sharedState.transactionEdit.relatedTransactions.length == 0
-            ) {
-                return false;
-            } else {
-                return true;
-            }
-        }
     },
     watch: {},
-    filters: {
-        
-    }
+    filters: {}
 };
 </script>
 
