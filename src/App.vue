@@ -4,6 +4,7 @@
         <ImportForm />
         <EditTransactionForm />
         <NewTransactionForm />
+        <BalanceSheet />
         <v-app-bar app color="teal">
             <v-app-bar-nav-icon @click.stop="sharedState.drawerOpen = !sharedState.drawerOpen" />
             <v-toolbar-title>Budget Planner</v-toolbar-title>

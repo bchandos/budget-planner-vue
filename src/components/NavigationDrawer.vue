@@ -25,6 +25,14 @@
                     <v-list-item-title>Import Transactions</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+            <v-list-item link @click="sharedState.balanceDialog = true">
+                <v-list-item-action>
+                    <v-icon>mdi-finance</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                    <v-list-item-title>View Balances</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
         </v-list>
     </v-navigation-drawer>
 </template>

@@ -14,6 +14,7 @@ export const store = {
         drawerOpen: false,
         importDialog: false,
         newTransactionDialog: false,
+        balanceDialog: false,
     },
     async getApiKey() {
         const response = await fetch('http://127.0.0.1:8080/api/v0.1/authentication', {
