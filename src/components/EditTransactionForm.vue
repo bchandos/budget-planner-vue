@@ -8,7 +8,7 @@
             <v-card-text>
                 <v-container v-if="sharedState.transactionEdit.transaction">
                     <v-row>
-                        <v-col >
+                        <v-col>
                             <v-select 
                                 v-model="sharedState.transactionEdit.transaction.account_id.id"
                                 :items="sharedState.banks" 
@@ -56,7 +56,7 @@
                                 item-value="id"
                                 prepend-icon="mdi-tag"
                                 >
-                            </v-select> 
+                            </v-select>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -96,9 +96,9 @@ export default {
         },
         close: function() {
             this.dateMenu = false;
-            store.exitEditMode();
-        }
-    
+            store.exitTransactionEditMode();
+        },
+   
     },
     computed: {
         neatDate: function() {

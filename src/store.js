@@ -8,6 +8,11 @@ export const store = {
             transaction: null,
             relatedTransactions: null,
         },
+        accountEdit: {
+            editMode: false,
+            editId: -1,
+            account: {},
+        },
         categories: [],
         toastMessage: '',
         APIKey: '',
@@ -131,7 +136,7 @@ export const store = {
         } else {
             this.setToastMessage('Failed to edit transaction: ' + json_response.payload.error_message);
         }
-        this.exitEditMode();
+        this.exitTransactionEditMode();
     },
     async importTransactions(file_obj, account_id) {
         // add multiple transactions via API and push to global state
@@ -254,17 +259,27 @@ export const store = {
     clearToastMessage() {
         this.state.toastMessage = '';
     },
-    enterEditMode(transaction) {
+    enterTransactionEditMode(transaction) {
         this.state.transactionEdit.editMode = true;
         this.state.transactionEdit.editId = transaction.id;
         this.state.transactionEdit.transaction = {...transaction};
         this.relatedTransactions(transaction.id);
     },
-    exitEditMode() {
+    exitTransactionEditMode() {
         this.state.transactionEdit.editMode = false;
         this.state.transactionEdit.editId = -1;
         this.state.transactionEdit.transaction = null;
         this.state.transactionEdit.relatedTransactions = null;
     },
+    enterAccountEditMode(account) {
+        this.state.accountEdit.editMode = true;
+        this.state.accountEdit.editId = account.id;
+        this.state.accountEdit.account = {...account};
+    },
+    exitAccountEditMode() {
+        this.state.accountEdit.editMode = false;
+        this.state.accountEdit.editId = -1;
+        this.state.accountEdit.account = {};
+    }
 
 };

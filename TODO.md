@@ -33,6 +33,7 @@
 - ~~Prettify the date format picker~~
     - Once you select the first item, filter the list
     - ~~Once you select the first seperator, all others follow suit~~
+    - Maybe just have a prepopulated list with all possible formats? Most popular on top?
 - ~~Get rid of filename regex stuff~~, and do some other kind of check on import
 - ~~Format numbers with commas~~
 - Search for transactions

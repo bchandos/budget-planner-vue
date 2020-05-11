@@ -18,7 +18,10 @@
             :items="sharedState.transactions"
             :items-per-page="15"
         >
-            <template v-slot:item.account="{item}">{{ item.account_id.name }}</template>
+            <template v-slot:item.account="{item}">
+                {{ item.account_id.name }}
+                <v-icon small class="mr-2" @click="sendAccountToEdit(item.account_id)">mdi-pencil</v-icon>
+            </template>
             <template v-slot:item.date="{item}">{{ item.date | neatDate }}</template>
             <template v-slot:item.amount="{item}">{{ item.amount | neatNumber }}</template>
             <template v-slot:item.actions="{item}">
@@ -53,7 +56,7 @@ export default {
             headers: [
                 {
                     text: "Account",
-                    value: "account_id.name",
+                    value: "account",
                     sortable: true,
                     filterable: true,
                     width: "15%"
@@ -109,7 +112,10 @@ export default {
             store.deleteTransaction(t_id);
         },
         sendToEdit: function(t) {
-            store.enterEditMode(t);
+            store.enterTransactionEditMode(t);
+        },
+        sendAccountToEdit: function(a) {
+            store.enterAccountEditMode(a);
         },
         updateCategory: function(item) {
             let transaction = {

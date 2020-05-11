@@ -5,6 +5,7 @@
         <EditTransactionForm />
         <NewTransactionForm />
         <BalanceSheet />
+        <EditAccountForm />
         <v-app-bar app color="teal">
             <v-app-bar-nav-icon @click.stop="sharedState.drawerOpen = !sharedState.drawerOpen" />
             <v-toolbar-title>Budget Planner</v-toolbar-title>
@@ -34,7 +35,7 @@ import { store } from './store.js';
 import TransactionList from './components/TransactionList.vue';
 import EditTransactionForm from './components/EditTransactionForm.vue';
 import ImportForm from './components/ImportForm.vue';
-import AccountForm from './components/AccountForm.vue';
+import EditAccountForm from './components/EditAccountForm.vue';
 import BalanceSheet from './components/BalanceSheet.vue'
 import NavigationDrawer from './components/NavigationDrawer.vue';
 import NewTransactionForm from './components/NewTransactionForm.vue'
@@ -45,7 +46,7 @@ export default {
         TransactionList,
         EditTransactionForm,
         ImportForm,
-        AccountForm,
+        EditAccountForm,
         BalanceSheet,
         NavigationDrawer,
         NewTransactionForm,
@@ -53,8 +54,6 @@ export default {
     data() {
         return {
             sharedState: store.state,
-            isModalVisible: false,
-            modalType: '',
         }
     },
 
@@ -67,41 +66,10 @@ export default {
             // store.setToastMessage('Test message');
     },
     computed: {
-        inEditMode: function() {
-            return this.sharedState.transactionEdit.editMode;
-        }
     },
     watch: {
-        inEditMode() {
-            if (this.sharedState.transactionEdit.editMode) {
-                this.showTransModal();
-            }
-        }
     },
     methods: {
-        showTransModal: function() {
-            this.modalType = 'transaction';
-            this.isModalVisible = true;
-        },
-        showImportModal: function() {
-            this.modalType = 'import';
-            this.isModalVisible = true;
-        },
-        showAccountModal: function() {
-            this.modalType = 'account';
-            this.isModalVisible = true;
-        },
-        showBalanceModal: function() {
-            this.modalType = 'balance';
-            this.isModalVisible = true;
-        },
-        closeModal: function() {
-            if (this.modalType == 'transaction' && this.inEditMode) {
-                store.exitEditMode();
-            }
-            this.isModalVisible = false;
-            this.modalType = '';
-        },
         clearToast: function() {
             store.clearToastMessage();
         }
