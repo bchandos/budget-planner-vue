@@ -20,6 +20,7 @@ export const store = {
         importDialog: false,
         newTransactionDialog: false,
         balanceDialog: false,
+        newCategoryDialog: false,
     },
     async getApiKey() {
         const response = await fetch('http://127.0.0.1:8080/api/v0.1/authentication', {
@@ -242,7 +243,7 @@ export const store = {
             // credentials: 'include',
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(category)
+            body: JSON.stringify({name: category})
         });
         const json_response = await response.json()
         if (json_response.status=='success') {

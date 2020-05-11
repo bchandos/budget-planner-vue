@@ -55,6 +55,8 @@
                                 item-text="name"
                                 item-value="id"
                                 prepend-icon="mdi-tag"
+                                append-outer-icon="mdi-tag-plus"
+                                @click:append-outer="sharedState.newCategoryDialog = true"
                                 >
                             </v-select>
                         </v-col>

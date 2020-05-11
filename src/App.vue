@@ -4,6 +4,7 @@
         <ImportForm />
         <EditTransactionForm />
         <NewTransactionForm />
+        <NewCategoryForm />
         <BalanceSheet />
         <EditAccountForm />
         <v-app-bar app color="teal">
@@ -36,9 +37,10 @@ import TransactionList from './components/TransactionList.vue';
 import EditTransactionForm from './components/EditTransactionForm.vue';
 import ImportForm from './components/ImportForm.vue';
 import EditAccountForm from './components/EditAccountForm.vue';
-import BalanceSheet from './components/BalanceSheet.vue'
+import BalanceSheet from './components/BalanceSheet.vue';
 import NavigationDrawer from './components/NavigationDrawer.vue';
-import NewTransactionForm from './components/NewTransactionForm.vue'
+import NewTransactionForm from './components/NewTransactionForm.vue';
+import NewCategoryForm from './components/NewCategoryForm.vue';
 
 export default {
     name: 'app',
@@ -50,6 +52,7 @@ export default {
         BalanceSheet,
         NavigationDrawer,
         NewTransactionForm,
+        NewCategoryForm,
     },
     data() {
         return {
