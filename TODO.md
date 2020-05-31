@@ -1,5 +1,5 @@
 - ~~Add simple state management (branch)~~
-- Convert spans to ~~flex divs~~ tables/cells for mobile optimization
+- ~~Convert spans to ~~flex divs~~ tables/cells for mobile optimization~~ Solved with Vuetify
 - ~~Auto close import modal on success~~
 - Account editing
     - ~~Account form~~
@@ -10,7 +10,7 @@
     - ~~create message div~~
     - ~~animate and dismiss messages~~
     - ~~timed dismissal~~
-    - smoother animation
+    - ~~smoother animation~~ Solved with Vuetify
 - Transaction Import
     - ~~Filter banks by filename regex~~
     - ~~Just auto-select the bank...~~
@@ -27,16 +27,16 @@
     - ~~Regardless, remove the goddamn 1 menu when there are no options!~
     - We want to be able to tie CC payments together I think? 
     - If we want to enter transactions as they happen and then reconcile against the bank's version - this seems like the primary function...
-    - If so, what happens to the original4000 (reconciled_to) transaction? Hidden? Only accesible through the main?
+    - If so, what happens to the original (reconciled_to) transaction? Hidden? Only accesible through the main?
     - If so, we'll need to have a more advanced interface for reconciling
     - Logic to automatically reconcile? Perhaps imported transactions should be flagged as such.
 - ~~Prettify the date format picker~~
-    - Once you select the first item, filter the list
+    - ~~Once you select the first item, filter the list~~
     - ~~Once you select the first seperator, all others follow suit~~
-    - Maybe just have a prepopulated list with all possible formats? Most popular on top?
+    - ~~Maybe just have a prepopulated list with all possible formats? Most popular on top?~~
 - ~~Get rid of filename regex stuff~~, and do some other kind of check on import
 - ~~Format numbers with commas~~
-- Search for transactions
+- ~~Search for transactions~~ Solved with Vuetify
 - Transaction form
     - When creating a new category, should that auto-populate that transaction's category select?
     - There is a delay when storing the transaction before the new one is available, means you can't immediately get the ID to set the select.
