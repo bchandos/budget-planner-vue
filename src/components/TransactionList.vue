@@ -30,7 +30,7 @@
             </template>
             <template v-slot:item.category_id.name="{item}">
                 <v-select 
-                    :disabled="item.category_id.name"
+                    :disabled="item.category_id.name ? true : false"
                     :append-icon="item.category_id.name ? '' : '$dropdown'"
                     v-model="item.category_id.id"
                     :items="sharedState.categories"
