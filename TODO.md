@@ -38,7 +38,8 @@
 - ~~Format numbers with commas~~
 - ~~Search for transactions~~ Solved with Vuetify
 - Transaction form
-    - When creating a new category, should that auto-populate that transaction's category select?
-    - There is a delay when storing the transaction before the new one is available, means you can't immediately get the ID to set the select.
+    - ~~When creating a new category, should that auto-populate that transaction's category select?~~
+    - ~~There is a delay when storing the transaction before the new one is available, means you can't immediately get the ID to set the select.~~
+    - Solve by making the change in the addCategory() method
 
 

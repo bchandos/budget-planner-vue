@@ -44,8 +44,7 @@ export default {
         addCategory: function() {
             if (this.newCategory) {
                 store.addCategory(this.newCategory);
-                this.newCategory = '';
-                this.sharedState.newCategoryDialog = false;
+                this.closeDialog();
             }
         },
         closeDialog: function() {

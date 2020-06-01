@@ -249,6 +249,11 @@ export const store = {
         if (json_response.status=='success') {
             this.state.categories.push(json_response.payload);
             this.setToastMessage('Added category "' + category.name +'".');
+            if (this.state.transactionEdit.editMode) {
+                // If we are currently editing a transaction, set its category
+                // to the newly created category
+                this.state.transactionEdit.transaction.category_id = json_response.payload;
+            }
         } else {
             this.setToastMessage('Failed to add new category: ' + json_response.payload.error_message);
         }
