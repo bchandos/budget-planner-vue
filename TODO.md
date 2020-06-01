@@ -40,6 +40,6 @@
 - Transaction form
     - ~~When creating a new category, should that auto-populate that transaction's category select?~~
     - ~~There is a delay when storing the transaction before the new one is available, means you can't immediately get the ID to set the select.~~
-    - Solve by making the change in the addCategory() method
+    - Solved by making the change in the addCategory() method
 
 
