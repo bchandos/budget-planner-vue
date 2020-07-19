@@ -8,9 +8,19 @@ export const store = {
             transaction: null,
             relatedTransactions: null,
         },
+        accountEdit: {
+            editMode: false,
+            editId: -1,
+            account: {},
+        },
         categories: [],
         toastMessage: '',
         APIKey: '',
+        drawerOpen: false,
+        importDialog: false,
+        newTransactionDialog: false,
+        balanceDialog: false,
+        newCategoryDialog: false,
     },
     async getApiKey() {
         const response = await fetch('http://127.0.0.1:8080/api/v0.1/authentication', {
@@ -127,7 +137,7 @@ export const store = {
         } else {
             this.setToastMessage('Failed to edit transaction: ' + json_response.payload.error_message);
         }
-        this.exitEditMode();
+        this.exitTransactionEditMode();
     },
     async importTransactions(file_obj, account_id) {
         // add multiple transactions via API and push to global state
@@ -233,12 +243,17 @@ export const store = {
             // credentials: 'include',
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(category)
+            body: JSON.stringify({name: category})
         });
         const json_response = await response.json()
         if (json_response.status=='success') {
             this.state.categories.push(json_response.payload);
             this.setToastMessage('Added category "' + category.name +'".');
+            if (this.state.transactionEdit.editMode) {
+                // If we are currently editing a transaction, set its category
+                // to the newly created category
+                this.state.transactionEdit.transaction.category_id = json_response.payload;
+            }
         } else {
             this.setToastMessage('Failed to add new category: ' + json_response.payload.error_message);
         }
@@ -250,17 +265,27 @@ export const store = {
     clearToastMessage() {
         this.state.toastMessage = '';
     },
-    enterEditMode(transaction) {
+    enterTransactionEditMode(transaction) {
         this.state.transactionEdit.editMode = true;
         this.state.transactionEdit.editId = transaction.id;
-        this.state.transactionEdit.transaction = transaction;
+        this.state.transactionEdit.transaction = {...transaction};
         this.relatedTransactions(transaction.id);
     },
-    exitEditMode() {
+    exitTransactionEditMode() {
         this.state.transactionEdit.editMode = false;
         this.state.transactionEdit.editId = -1;
         this.state.transactionEdit.transaction = null;
         this.state.transactionEdit.relatedTransactions = null;
     },
+    enterAccountEditMode(account) {
+        this.state.accountEdit.editMode = true;
+        this.state.accountEdit.editId = account.id;
+        this.state.accountEdit.account = {...account};
+    },
+    exitAccountEditMode() {
+        this.state.accountEdit.editMode = false;
+        this.state.accountEdit.editId = -1;
+        this.state.accountEdit.account = {};
+    }
 
 };

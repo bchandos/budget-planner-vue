@@ -58,9 +58,9 @@ export default {
         },
         toggleEdit() {
             if (this.sharedState.transactionEdit.editMode == true) {
-                store.exitEditMode();
+                store.exitTransactionEditMode();
             } else {
-                store.enterEditMode(this.transaction);
+                store.enterTransactionEditMode(this.transaction);
             }
         },
         deleteTrans() {
