@@ -1,5 +1,5 @@
 <template>
-    <v-card width="70%" class="mx-auto">
+    <v-card class="mx-auto col-10">
         <v-card-title>
             Transactions
             <v-spacer></v-spacer>
@@ -59,40 +59,34 @@ export default {
                     value: "account",
                     sortable: true,
                     filterable: true,
-                    width: "15%"
                 },
                 {
                     text: "Date",
                     value: "date",
                     sortable: true,
                     filterable: true,
-                    width: "12%"
                 },
                 {
                     text: "Description",
                     value: "description",
                     sortable: true,
                     filterable: true,
-                    width: "35%"
                 },
                 {
                     text: 'Category',
                     value: 'category_id.name',
                     sortable: true,
                     filterable: true,
-                    width: '18%'
                 },
                 {
                     text: "Amount",
                     value: "amount",
                     sortable: true,
                     filterable: true,
-                    width: "10%"
                 },
                 {
                     text: "Actions",
                     value: "actions",
-                    width: "10%",
                     sortable: false,
                     filterable: false
                 },
