@@ -66,7 +66,7 @@ export default {
             store.loadBanks();
             store.loadCategories();
             // debug
-            // store.setToastMessage('Test message');
+            store.setToastMessage('Welcome to the Budget Planner example app. Feel free to edit data; changes do not persist.');
     },
     computed: {
     },
