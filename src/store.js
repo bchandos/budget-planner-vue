@@ -25,7 +25,7 @@ export const store = {
         newCategoryDialog: false,
     },
     async getApiKey() {
-        const response = await fetch(`${process.env.HOST}/api/v0.1/authentication`, {
+        const response = await fetch(`${process.env.SERVER_IP}/api/v0.1/authentication`, {
             // credentials: 'include',
             // need to figure out how to set cookies here, this should allow them
             // but it causes a big hangup and also doesn't actually set the cookies.
@@ -44,7 +44,7 @@ export const store = {
     },
     async loadTransactions() {
         // load all transactions from the API and update global state
-        const url = `${process.env.HOST}/api/v0.1/transactions`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/transactions`;
         const response_trans = await fetch(url);
         const json_trans = await response_trans.json();
         // handle server errors here?
@@ -57,7 +57,7 @@ export const store = {
     },
     async loadAccountTransactions(account_id) {
         // load all of an account's transactions from the API and update global state
-        const url = `${process.env.HOST}/api/v0.1/transactions/account/${parseInt(account_id)}`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/transactions/account/${parseInt(account_id)}`;
         const response_trans = await fetch(url);
         const json_trans = await response_trans.json();
         // handle server errors here?
@@ -70,7 +70,7 @@ export const store = {
     },
     async loadCategoryTransactions(category_id) {
         // load all of a category's transactions from the API and update global state
-        const url = `${process.env.HOST}/api/v0.1/transactions/category/${parseInt(category_id)}`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/transactions/category/${parseInt(category_id)}`;
         const response_trans = await fetch(url);
         const json_trans = await response_trans.json();
         // handle server errors here?
@@ -83,7 +83,7 @@ export const store = {
     },
     async loadBanks() {
         // load all banks from the API and update global state
-        const response_accounts = await fetch(`${process.env.HOST}/api/v0.1/accounts`);
+        const response_accounts = await fetch(`${process.env.SERVER_IP}/api/v0.1/accounts`);
         const json_accounts = await response_accounts.json();
         // handle server errors here?
         if (json_accounts.status == 'success') {
@@ -95,7 +95,7 @@ export const store = {
     },
     async loadCategories() {
         // load all categories from the API and update global state
-        const response_accounts = await fetch(`${process.env.HOST}/api/v0.1/categories`);
+        const response_accounts = await fetch(`${process.env.SERVER_IP}/api/v0.1/categories`);
         const json_categories = await response_accounts.json();
         // handle server errors here?
         if (json_categories.status == 'success') {
@@ -107,7 +107,7 @@ export const store = {
     },
     async addTransaction(transaction) {
         // add transaction via API and push to global state
-        const url = `${process.env.HOST}/api/v0.1/transaction`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/transaction`;
         const response = await fetch(url, {
             // credentials: 'include',
             method: 'POST',
@@ -125,7 +125,7 @@ export const store = {
     },
     async editTransaction(transaction) {
         // send edited transaction to API and then update global state
-        const url = `${process.env.HOST}/api/v0.1/transaction/` + transaction.id;
+        const url = `${process.env.SERVER_IP}/api/v0.1/transaction/` + transaction.id;
         const response = await fetch(url, {
             // credentials: 'include',
             method: 'PUT',
@@ -143,7 +143,7 @@ export const store = {
     },
     async importTransactions(file_obj, account_id) {
         // add multiple transactions via API and push to global state
-        const url = `${process.env.HOST}/api/v0.1/import_transactions`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/import_transactions`;
         const form_data = new FormData();
         form_data.append('file_upload', file_obj);
         form_data.append('bank_id', account_id);
@@ -165,7 +165,7 @@ export const store = {
     },
     async deleteTransaction(transaction_id) {
         // delete transaction via API and remove from global state
-        const url = `${process.env.HOST}/api/v0.1/transaction/` + transaction_id;
+        const url = `${process.env.SERVER_IP}/api/v0.1/transaction/` + transaction_id;
         const response = await fetch(url, {
             // credentials: 'include',
             method: 'DELETE'
@@ -179,7 +179,7 @@ export const store = {
     },
     async relatedTransactions(transaction_id) {
         // get possibly related transactions from API and add to global state
-        const url = `${process.env.HOST}/api/v0.1/transaction/${transaction_id}/related`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/transaction/${transaction_id}/related`;
         const response = await fetch(url);
         const json_response = await response.json();
         if (json_response.status == 'success') {
@@ -190,7 +190,7 @@ export const store = {
     },
     async addBank(bank) {
         // add bank via API and push to global state
-        const url = `${process.env.HOST}/api/v0.1/accounts`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/accounts`;
         const response = await fetch(url, {
             // credentials: 'include',
             method: 'POST',
@@ -206,7 +206,7 @@ export const store = {
     },
     async editBank(bank) {
         // edit bank via API and edited bank to global state
-        const url = `${process.env.HOST}/api/v0.1/accounts/` + bank.id;
+        const url = `${process.env.SERVER_IP}/api/v0.1/accounts/` + bank.id;
         const response = await fetch(url, {
             // credentials: 'include',
             method: 'PUT',
@@ -223,7 +223,7 @@ export const store = {
     },
     async deleteBank(bank_id) {
         // delete bank via API and remove from global state
-        const url = `${process.env.HOST}/api/v0.1/accounts/` + bank_id;
+        const url = `${process.env.SERVER_IP}/api/v0.1/accounts/` + bank_id;
         const response = await fetch(url, {
             // credentials: 'include',
             method: 'DELETE',
@@ -240,7 +240,7 @@ export const store = {
     },
     async addCategory(category) {
         // add category via API and push to global state
-        const url = `${process.env.HOST}/api/v0.1/categories`;
+        const url = `${process.env.SERVER_IP}/api/v0.1/categories`;
         const response = await fetch(url, {
             // credentials: 'include',
             method: 'POST',
