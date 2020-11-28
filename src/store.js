@@ -21,6 +21,7 @@ export const store = {
         newTransactionDialog: false,
         balanceDialog: false,
         newCategoryDialog: false,
+        loading: false,
     },
     async getApiKey() {
         const response = await fetch(`${process.env.VUE_APP_SERVER_IP}/api/v0.1/authentication`, {
@@ -42,6 +43,7 @@ export const store = {
     },
     async loadTransactions() {
         // load all transactions from the API and update global state
+        this.state.loading = true;
         const url = `${process.env.VUE_APP_SERVER_IP}/api/v0.1/transactions`;
         const response_trans = await fetch(url);
         const json_trans = await response_trans.json();
@@ -52,6 +54,7 @@ export const store = {
             this.setToastMessage('Failed to retrieve transactions: ' + json_trans.payload.error_message);
             // should we clear transactions?
         }
+        this.state.loading = false;
     },
     async loadAccountTransactions(account_id) {
         // load all of an account's transactions from the API and update global state

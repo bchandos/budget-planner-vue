@@ -17,18 +17,19 @@
             :headers="headers"
             :items="sharedState.transactions"
             :items-per-page="15"
+            :loading="sharedState.loading"
         >
-            <template v-slot:item.account="{item}">
+            <template v-slot:[`item.account`]="{item}">
                 {{ item.account_id.name }}
                 <v-icon small class="mr-2" @click="sendAccountToEdit(item.account_id)">mdi-pencil</v-icon>
             </template>
-            <template v-slot:item.date="{item}">{{ item.date | neatDate }}</template>
-            <template v-slot:item.amount="{item}">{{ item.amount | neatNumber }}</template>
-            <template v-slot:item.actions="{item}">
+            <template v-slot:[`item.date`]="{item}">{{ item.date | neatDate }}</template>
+            <template v-slot:[`item.amount`]="{item}">{{ item.amount | neatNumber }}</template>
+            <template v-slot:[`item.actions`]="{item}">
                 <v-icon small class="mr-2" @click="sendToEdit(item)">mdi-pencil</v-icon>
                 <v-icon small class="ml-2" @click="deleteTrans(item.id)">mdi-delete</v-icon>
             </template>
-            <template v-slot:item.category_id.name="{item}">
+            <template v-slot:[`item.category_id.name`]="{item}">
                 <v-select 
                     :disabled="item.category_id.name ? true : false"
                     :append-icon="item.category_id.name ? '' : '$dropdown'"

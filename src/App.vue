@@ -14,7 +14,7 @@
                 <v-icon>mdi-cash-plus</v-icon>
             </v-btn>
         </v-app-bar>
-        <v-content>
+        <v-main>
             <v-row justify="center">
                 <v-alert
                     dense
@@ -27,7 +27,7 @@
             </v-row>
             
             <TransactionList />
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 
